@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\ExperiencesController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\ProfilesController;
+use App\Models\Certificado;
 use App\Models\Usuario;
 use App\Models\Perfil;
 use App\Models\Experiencia;
@@ -9,8 +12,9 @@ use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 
+
 Route::get('/', function () {
-    return view('welcome');
+    return view('login');
 });
 
 Route::get('/login', function () {
@@ -52,51 +56,18 @@ Route::prefix('api')->group(function () {
     Route::resource('usuarios', UsuarioController::class)->middleware('auth:sanctum')->except(['store']);
 
     // Simple profile routes using closures
-    Route::post('perfiles', function(Request $request) {
-        $user = $request->user();
-        $data = $request->all();
-        $data['usuario_id'] = $user->id;
-
-        // Check if profile already exists
-        $existingPerfil = Perfil::where('usuario_id', $user->id)->first();
-        if ($existingPerfil) {
-            $existingPerfil->update($data);
-            return response()->json($existingPerfil);
-        } else {
-            $perfil = Perfil::create($data);
-            return response()->json($perfil, 201);
-        }
-    })->middleware('auth:sanctum');
-
-    Route::get('perfiles', function(Request $request) {
-        $user = $request->user();
-        $perfil = Perfil::with('usuario:id,nombre,email,apellido')
-        ->where('usuario_id', $user->id)
-        ->first();
-        return response()->json($perfil ?: null);
-    })->middleware('auth:sanctum');
-
-    Route::get('perfiles/{usuario}', function($usuario) {
-        $perfil = Perfil::where('usuario_id', $usuario)->first();
-        return response()->json($perfil ?: null);
-    })->middleware('auth:sanctum');
+    // Profiles start
+    Route::post('perfiles', [ProfilesController::class, 'newUser'])->middleware('auth:sanctum');
+    Route::get('perfiles', [ProfilesController::class, 'show'])->middleware('auth:sanctum');
+    Route::get('perfiles/{usuario}', [ProfilesController::class, 'getCurrentUser'] )->middleware('auth:sanctum');
+    // Profiles end
 
     // Simple experience routes using closures
-    Route::get('experiencias', function(Request $request) {
-        $user = $request->user();
-        $experiencias = Experiencia::where('usuario_id', $user->id)
-            ->orderBy('fecha_inicio', 'desc')
-            ->get();
-        return response()->json($experiencias);
-    })->middleware('auth:sanctum');
+    // Experiences start
+    Route::get('experiencias', [ExperiencesController::class, 'store'])->middleware('auth:sanctum');
+    Route::post('experiencias', [ExperiencesController::class, 'create'] )->middleware('auth:sanctum');
+    // Experiences end
 
-    Route::post('experiencias', function(Request $request) {
-        $user = $request->user();
-        $data = $request->all();
-        $data['usuario_id'] = $user->id;
-        $experiencia = Experiencia::create($data);
-        return response()->json($experiencia, 201);
-    })->middleware('auth:sanctum');
 
     Route::put('experiencias/{experiencia}', function(Request $request, Experiencia $experiencia) {
         $user = $request->user();
@@ -152,7 +123,7 @@ Route::prefix('api')->group(function () {
     // Certifications routes
     Route::get('certificados', function(Request $request) {
         $user = $request->user();
-        $certificados = \App\Models\Certificado::where('usuario_id', $user->id)->orderBy('fecha_emision', 'desc')->get();
+        $certificados = Certificado::where('usuario_id', $user->id)->orderBy('fecha_expedicion', 'desc')->get();
         return response()->json($certificados);
     })->middleware('auth:sanctum');
 
@@ -160,11 +131,11 @@ Route::prefix('api')->group(function () {
         $user = $request->user();
         $data = $request->all();
         $data['usuario_id'] = $user->id;
-        $certificado = \App\Models\Certificado::create($data);
+        $certificado = Certificado::create($data);
         return response()->json($certificado, 201);
     })->middleware('auth:sanctum');
 
-    Route::put('certificados/{certificado}', function(Request $request, \App\Models\Certificado $certificado) {
+    Route::put('certificados/{certificado}', function(Request $request, Certificado $certificado) {
         $user = $request->user();
         if ($certificado->usuario_id !== $user->id) {
             return response()->json(['error' => 'Unauthorized'], 403);
@@ -173,7 +144,7 @@ Route::prefix('api')->group(function () {
         return response()->json($certificado);
     })->middleware('auth:sanctum');
 
-    Route::delete('certificados/{certificado}', function(Request $request, \App\Models\Certificado $certificado) {
+    Route::delete('certificados/{certificado}', function(Request $request, Certificado $certificado) {
         $user = $request->user();
         if ($certificado->usuario_id !== $user->id) {
             return response()->json(['error' => 'Unauthorized'], 403);
