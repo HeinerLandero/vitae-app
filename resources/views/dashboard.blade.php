@@ -15,805 +15,1052 @@
                         'vitae-blue': '#3b82f6',
                         'vitae-purple': '#8b5cf6',
                         'vitae-green': '#10b981'
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.3s ease-in-out',
+                        'slide-up': 'slideUp 0.3s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(10px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
                     }
                 }
             }
         }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .tab-content.active {
+            display: block;
+            animation: slideUp 0.3s ease-out;
+        }
+        .nav-item.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            color: white;
+        }
+        .nav-item.active i {
+            color: white;
+        }
+        .glass-effect {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        .gradient-border {
+            position: relative;
+        }
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #10b981);
+        }
+    </style>
 </head>
 
-<body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
-    <!-- Header -->
-    <header class="bg-white shadow-sm border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center py-6">
-                <div class="flex items-center">
-                    <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-xl mr-4">
-                        <i class="fas fa-user-circle text-2xl"></i>
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Mobile Menu Button - Attached to right side of sidebar -->
+        <button id="mobileMenuBtn" class="lg:hidden fixed top-4 right-4 z-50 p-3 bg-slate-800 text-white rounded-xl shadow-lg border border-slate-600" onclick="toggleMobileSidebar()">
+            <i id="menuIcon" class="fas fa-chevron-right text-xl"></i>
+        </button>
+
+        <!-- Sidebar -->
+        <aside id="sidebar" class="w-72 glass-effect border-r border-slate-700 flex flex-col shadow-2xl fixed lg:relative inset-y-0 left-0 z-40 transform -translate-x-full lg:translate-x-0 transition-transform duration-300">
+            <!-- Logo -->
+            <div class="p-6 border-b border-slate-700">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                        <i class="fas fa-user-circle text-white text-xl"></i>
                     </div>
                     <div>
-                        <h1 class="text-2xl font-bold text-gray-900">Mi Currículum Digital</h1>
-                        <p class="text-sm text-gray-500">Gestiona tu perfil profesional</p>
+                        <h1 class="text-lg font-bold text-white">Vitae</h1>
+                        <p class="text-xs text-slate-400">Crea tu CV profesional</p>
                     </div>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <button onclick="logout()" class="text-gray-600 hover:text-gray-900 transition-colors">
-                        <i class="fas fa-sign-out-alt mr-2"></i>
-                        Cerrar Sesión
+            </div>
+
+            <!-- Navigation -->
+            <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
+                <button onclick="switchTab('perfil')" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-white hover:bg-slate-700 transition-all duration-200" data-tab="perfil">
+                    <div class="w-10 h-10 bg-blue-600/30 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-user text-blue-400"></i>
+                    </div>
+                    <span class="font-medium">Perfil</span>
+                </button>
+
+                <button onclick="switchTab('experiencia')" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-white hover:bg-slate-700 transition-all duration-200" data-tab="experiencia">
+                    <div class="w-10 h-10 bg-green-600/30 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-briefcase text-green-400"></i>
+                    </div>
+                    <span class="font-medium">Experiencia</span>
+                </button>
+
+                <button onclick="switchTab('educacion')" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-white hover:bg-slate-700 transition-all duration-200" data-tab="educacion">
+                    <div class="w-10 h-10 bg-purple-600/30 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-purple-400"></i>
+                    </div>
+                    <span class="font-medium">Educación</span>
+                </button>
+
+                <button onclick="switchTab('certificaciones')" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-white hover:bg-slate-700 transition-all duration-200" data-tab="certificaciones">
+                    <div class="w-10 h-10 bg-yellow-600/30 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-award text-yellow-400"></i>
+                    </div>
+                    <span class="font-medium">Certificaciones</span>
+                </button>
+
+                <button onclick="switchTab('habilidades')" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-white hover:bg-slate-700 transition-all duration-200" data-tab="habilidades">
+                    <div class="w-10 h-10 bg-cyan-600/30 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tools text-cyan-400"></i>
+                    </div>
+                    <span class="font-medium">Habilidades</span>
+                </button>
+
+                <button onclick="switchTab('idiomas')" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-white hover:bg-slate-700 transition-all duration-200" data-tab="idiomas">
+                    <div class="w-10 h-10 bg-emerald-600/30 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-language text-emerald-400"></i>
+                    </div>
+                    <span class="font-medium">Idiomas</span>
+                </button>
+
+                <button onclick="switchTab('proyectos')" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-white hover:bg-slate-700 transition-all duration-200" data-tab="proyectos">
+                    <div class="w-10 h-10 bg-orange-600/30 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-project-diagram text-orange-400"></i>
+                    </div>
+                    <span class="font-medium">Proyectos</span>
+                </button>
+
+                <button onclick="switchTab('publicaciones')" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-white hover:bg-slate-700 transition-all duration-200" data-tab="publicaciones">
+                    <div class="w-10 h-10 bg-pink-600/30 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-book text-pink-400"></i>
+                    </div>
+                    <span class="font-medium">Publicaciones</span>
+                </button>
+
+                <button onclick="switchTab('redes')" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-white hover:bg-slate-700 transition-all duration-200" data-tab="redes">
+                    <div class="w-10 h-10 bg-indigo-600/30 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-share-alt text-indigo-400"></i>
+                    </div>
+                    <span class="font-medium">Redes Sociales</span>
+                </button>
+            </nav>
+
+            <!-- User & Logout -->
+            <div class="p-4 border-t border-slate-700">
+                <div id="userInfo" class="flex items-center space-x-3 mb-4">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p id="userName" class="text-sm font-medium text-white truncate">Cargando...</p>
+                        <p class="text-xs text-slate-400">Usuario</p>
+                    </div>
+                </div>
+                <button onclick="logout()" class="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-red-600/20 text-red-400 rounded-xl hover:bg-red-600/30 transition-colors">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="font-medium">Cerrar Sesión</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto">
+            <!-- Header -->
+            <header class="hidden lg:flex glass-effect border-b border-slate-700 sticky top-0 z-10">
+                <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between w-full">
+                    <div>
+                        <h2 id="tabTitle" class="text-2xl font-bold text-white">Perfil</h2>
+                        <p id="tabSubtitle" class="text-sm text-slate-400">Gestiona tu información personal</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <!-- QR Button -->
+                        <button onclick="toggleQRModal()" class="p-3 bg-purple-600/30 text-purple-400 rounded-xl hover:bg-purple-600/40 transition-colors">
+                            <i class="fas fa-qrcode"></i>
+                        </button>
+                        <!-- Progress -->
+                        <div class="flex items-center space-x-2 px-4 py-2 bg-slate-700 rounded-xl">
+                            <div class="w-16 h-2 bg-slate-600 rounded-full overflow-hidden">
+                                <div id="progressBar" class="h-full bg-gradient-to-r from-blue-600 to-purple-600 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <span id="progressText" class="text-sm font-medium text-white">0%</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Mobile Floating Buttons -->
+            <div class="lg:hidden fixed top-20 right-4 z-40 flex flex-col gap-3">
+                <!-- Progress Floating Button -->
+                <button onclick="toggleProgressModal()" class="p-3 bg-slate-800/90 text-white rounded-xl shadow-lg border border-slate-600 backdrop-blur-sm" title="Progreso del CV">
+                    <div class="relative">
+                        <i class="fas fa-chart-pie text-green-400 text-xl"></i>
+                        <span id="progressBadge" class="absolute -top-1 -right-1 w-4 h-4 bg-blue-600 text-white text-xs rounded-full flex items-center justify-center">0</span>
+                    </div>
+                </button>
+                <!-- QR Floating Button -->
+                <button onclick="toggleQRModal()" class="p-3 bg-purple-600 text-white rounded-xl shadow-lg">
+                    <i class="fas fa-qrcode text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Content Area -->
+            <div class="max-w-6xl mx-auto p-4 lg:p-6">
+                <!-- Perfil Tab -->
+                <div id="tab-perfil" class="tab-content active">
+                    <div class="bg-slate-800 rounded-2xl shadow-xl border border-slate-700 overflow-hidden gradient-border">
+                        <div class="p-6">
+                            <div id="perfilStatus" class="mb-6">
+                                <div class="flex items-center p-4 bg-slate-700 rounded-xl border border-slate-600">
+                                    <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500 mr-3"></div>
+                                    <p class="text-gray-300">Cargando información...</p>
+                                </div>
+                            </div>
+                            <form id="perfilForm" class="hidden space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-white mb-2">
+                                            <i class="fas fa-user mr-2 text-blue-400"></i>Nombre
+                                        </label>
+                                        <input type="text" name="nombre" required
+                                            class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-slate-700 text-white placeholder-slate-400"
+                                            placeholder="Tu nombre">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-white mb-2">
+                                            <i class="fas fa-user-tag mr-2 text-blue-400"></i>Apellido
+                                        </label>
+                                        <input type="text" name="apellido" required
+                                            class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-slate-700 text-white placeholder-slate-400"
+                                            placeholder="Tu apellido">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-semibold text-white mb-2">
+                                        <i class="fas fa-briefcase mr-2 text-blue-400"></i>Cargo Profesional
+                                    </label>
+                                    <input type="text" name="cargo" required
+                                        class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-slate-700 text-white placeholder-slate-400"
+                                        placeholder="Ej: Desarrollador Full Stack">
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-white mb-2">
+                                            <i class="fas fa-envelope mr-2 text-blue-400"></i>Email
+                                        </label>
+                                        <input type="email" name="email" required
+                                            class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-slate-700 text-white placeholder-slate-400"
+                                            placeholder="tu@email.com">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-white mb-2">
+                                            <i class="fas fa-phone mr-2 text-blue-400"></i>Teléfono
+                                        </label>
+                                        <input type="text" name="telefono" required
+                                            class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-slate-700 text-white placeholder-slate-400"
+                                            placeholder="+57 300 123 4567">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-white mb-2">
+                                            <i class="fas fa-calendar mr-2 text-blue-400"></i>Fecha de Nacimiento
+                                        </label>
+                                        <input type="date" name="fecha_nacimiento" required
+                                            class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-slate-700 text-white">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-white mb-2">
+                                            <i class="fas fa-flag mr-2 text-blue-400"></i>Nacionalidad
+                                        </label>
+                                        <input type="text" name="nacionalidad" required
+                                            class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-slate-700 text-white placeholder-slate-400"
+                                            placeholder="Colombiana">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-semibold text-white mb-2">
+                                        <i class="fas fa-map-marker-alt mr-2 text-blue-400"></i>Dirección
+                                    </label>
+                                    <input type="text" name="direccion" required
+                                        class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-slate-700 text-white placeholder-slate-400"
+                                        placeholder="Calle 123 #45-67">
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-white mb-2">
+                                            <i class="fas fa-city mr-2 text-blue-400"></i>Ciudad
+                                        </label>
+                                        <input type="text" name="ciudad" required
+                                            class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-slate-700 text-white placeholder-slate-400"
+                                            placeholder="Bogotá">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-white mb-2">
+                                            <i class="fas fa-globe mr-2 text-blue-400"></i>País
+                                        </label>
+                                        <input type="text" name="pais" required
+                                            class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-slate-700 text-white placeholder-slate-400"
+                                            placeholder="Colombia">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-white mb-2">
+                                            <i class="fas fa-id-card mr-2 text-blue-400"></i>Tipo de Documento
+                                        </label>
+                                        <select name="tipo_documento" required
+                                            class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-slate-700 text-white">
+                                            <option value="">Seleccionar</option>
+                                            <option value="CC">Cédula de Ciudadanía</option>
+                                            <option value="CE">Cédula de Extranjería</option>
+                                            <option value="PP">Pasaporte</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-semibold text-white mb-2">
+                                        <i class="fas fa-hashtag mr-2 text-blue-400"></i>Número de Documento
+                                    </label>
+                                    <input type="text" name="numero_documento" required
+                                        class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-slate-700 text-white placeholder-slate-400"
+                                        placeholder="123456789">
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-semibold text-white mb-2">
+                                        <i class="fas fa-align-left mr-2 text-blue-400"></i>Descripción Personal
+                                    </label>
+                                    <textarea name="descripcion" rows="4" required
+                                        class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-slate-700 text-white placeholder-slate-400 resize-none"
+                                        placeholder="Cuéntanos sobre ti..."></textarea>
+                                </div>
+
+                                <button type="submit"
+                                    class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-6 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transform hover:scale-[1.01] transition-all duration-200 shadow-lg">
+                                    <i class="fas fa-save mr-2"></i>
+                                    Guardar Perfil
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Experiencia Tab -->
+                <div id="tab-experiencia" class="tab-content">
+                    <div class="space-y-6">
+                        <!-- Existing -->
+                        <div id="experienciasContainer" class="hidden">
+                            <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+                                <i class="fas fa-briefcase mr-2 text-green-400"></i>
+                                Tus Experiencias
+                            </h3>
+                            <div id="experienciasList" class="space-y-4"></div>
+                        </div>
+
+                        <!-- Form -->
+                        <div class="bg-slate-800 rounded-2xl shadow-xl border border-slate-700 overflow-hidden gradient-border">
+                            <div class="p-6">
+                                <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+                                    <i class="fas fa-plus mr-2 text-green-400"></i>
+                                    Agregar Experiencia
+                                </h3>
+                                <form id="experienciaForm" class="space-y-4">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-semibold text-white mb-2">Empresa</label>
+                                            <input type="text" name="empresa" required
+                                                class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent bg-slate-700 text-white placeholder-slate-400"
+                                                placeholder="Nombre de la empresa">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-semibold text-white mb-2">Cargo</label>
+                                            <input type="text" name="cargo" required
+                                                class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent bg-slate-700 text-white placeholder-slate-400"
+                                                placeholder="Tu posición">
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold text-white mb-2">Descripción</label>
+                                        <textarea name="descripcion" rows="3" required
+                                            class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent bg-slate-700 text-white placeholder-slate-400 resize-none"
+                                            placeholder="Describe tus responsabilidades..."></textarea>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-semibold text-white mb-2">Fecha Inicio</label>
+                                            <input type="date" name="fecha_inicio" required
+                                                class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent bg-slate-700 text-white">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-semibold text-white mb-2">Fecha Fin</label>
+                                            <input type="date" name="fecha_fin"
+                                                class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent bg-slate-700 text-white">
+                                        </div>
+                                        <div class="flex items-end">
+                                            <label class="flex items-center">
+                                                <input type="checkbox" name="es_actual" class="h-5 w-5 text-green-500 rounded">
+                                                <span class="ml-2 text-sm text-white">Trabajo actual</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit"
+                                        class="w-full bg-gradient-to-r from-green-600 to-teal-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-green-700 hover:to-teal-700 transition-all duration-200">
+                                        <i class="fas fa-plus mr-2"></i>
+                                        Agregar Experiencia
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Educacion Tab -->
+                <div id="tab-educacion" class="tab-content">
+                    <div class="space-y-6">
+                        <div id="educacionesContainer" class="hidden">
+                            <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+                                <i class="fas fa-graduation-cap mr-2 text-purple-400"></i>
+                                Tu Educación
+                            </h3>
+                            <div id="educacionesList" class="space-y-4"></div>
+                        </div>
+
+                        <div class="bg-slate-800 rounded-2xl shadow-xl border border-slate-700 overflow-hidden gradient-border">
+                            <div class="p-6">
+                                <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+                                    <i class="fas fa-plus mr-2 text-purple-400"></i>
+                                    Agregar Educación
+                                </h3>
+                                <form id="educacionForm" class="space-y-4">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-semibold text-white mb-2">Institución</label>
+                                            <input type="text" name="institucion" required
+                                                class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-slate-700 text-white placeholder-slate-400"
+                                                placeholder="Nombre de la institución">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-semibold text-white mb-2">Título</label>
+                                            <input type="text" name="titulo" required
+                                                class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-slate-700 text-white placeholder-slate-400"
+                                                placeholder="Título obtenido">
+                                        </div>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-semibold text-white mb-2">Nivel</label>
+                                            <select name="nivel" required
+                                                class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-slate-700 text-white">
+                                                <option value="">Seleccionar</option>
+                                                <option value="Bachillerato">Bachillerato</option>
+                                                <option value="Técnico">Técnico</option>
+                                                <option value="Tecnólogo">Tecnólogo</option>
+                                                <option value="Pregrado">Pregrado</option>
+                                                <option value="Especialización">Especialización</option>
+                                                <option value="Maestría">Maestría</option>
+                                                <option value="Doctorado">Doctorado</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-semibold text-white mb-2">Fecha Inicio</label>
+                                            <input type="date" name="fecha_inicio" required
+                                                class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-slate-700 text-white">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-semibold text-white mb-2">Fecha Fin</label>
+                                            <input type="date" name="fecha_fin"
+                                                class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-slate-700 text-white">
+                                        </div>
+                                    </div>
+
+                                    <button type="submit"
+                                        class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-purple-700 hover:to-indigo-700 transition-all duration-200">
+                                        <i class="fas fa-plus mr-2"></i>
+                                        Agregar Educación
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Certificaciones Tab -->
+                <div id="tab-certificaciones" class="tab-content">
+                    <div class="space-y-6">
+                        <div id="certificadosContainer" class="hidden">
+                            <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+                                <i class="fas fa-award mr-2 text-yellow-400"></i>
+                                Tus Certificaciones
+                            </h3>
+                            <div id="certificadosList" class="space-y-4"></div>
+                        </div>
+
+                        <div class="bg-slate-800 rounded-2xl shadow-xl border border-slate-700 overflow-hidden gradient-border">
+                            <div class="p-6">
+                                <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+                                    <i class="fas fa-plus mr-2 text-yellow-400"></i>
+                                    Agregar Certificación
+                                </h3>
+                                <form id="certificadoForm" class="space-y-4">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-semibold text-white mb-2">Nombre</label>
+                                            <input type="text" name="titulo" required
+                                                class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-transparent bg-slate-700 text-white placeholder-slate-400"
+                                                placeholder="Nombre de la certificación">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-semibold text-white mb-2">Institución</label>
+                                            <input type="text" name="institucion" required
+                                                class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-transparent bg-slate-700 text-white placeholder-slate-400"
+                                                placeholder="Institución emisora">
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold text-white mb-2">Fecha de Emisión</label>
+                                        <input type="date" name="fecha_emision" required
+                                            class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-transparent bg-slate-700 text-white">
+                                    </div>
+
+                                    <button type="submit"
+                                        class="w-full bg-gradient-to-r from-yellow-600 to-orange-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-yellow-700 hover:to-orange-700 transition-all duration-200">
+                                        <i class="fas fa-plus mr-2"></i>
+                                        Agregar Certificación
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Habilidades Tab -->
+                <div id="tab-habilidades" class="tab-content">
+                    <div class="space-y-6">
+                        <div id="habilidadesContainer" class="hidden">
+                            <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+                                <i class="fas fa-tools mr-2 text-cyan-400"></i>
+                                Tus Habilidades
+                            </h3>
+                            <div id="habilidadesList" class="space-y-4"></div>
+                        </div>
+
+                        <div class="bg-slate-800 rounded-2xl shadow-xl border border-slate-700 overflow-hidden gradient-border">
+                            <div class="p-6">
+                                <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+                                    <i class="fas fa-plus mr-2 text-cyan-400"></i>
+                                    Agregar Habilidad
+                                </h3>
+                                <form id="habilidadForm" class="space-y-4">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-semibold text-white mb-2">Habilidad</label>
+                                            <input type="text" name="habilidad" required
+                                                class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent bg-slate-700 text-white placeholder-slate-400"
+                                                placeholder="Ej: JavaScript">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-semibold text-white mb-2">Nivel</label>
+                                            <select name="nivel" required
+                                                class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent bg-slate-700 text-white">
+                                                <option value="">Seleccionar</option>
+                                                <option value="Básico">Básico</option>
+                                                <option value="Intermedio">Intermedio</option>
+                                                <option value="Avanzado">Avanzado</option>
+                                                <option value="Experto">Experto</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit"
+                                        class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-cyan-700 hover:to-blue-700 transition-all duration-200">
+                                        <i class="fas fa-plus mr-2"></i>
+                                        Agregar Habilidad
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Idiomas Tab -->
+                <div id="tab-idiomas" class="tab-content">
+                    <div class="space-y-6">
+                        <div id="idiomasContainer" class="hidden">
+                            <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+                                <i class="fas fa-language mr-2 text-emerald-400"></i>
+                                Tus Idiomas
+                            </h3>
+                            <div id="idiomasList" class="space-y-4"></div>
+                        </div>
+
+                        <div class="bg-slate-800 rounded-2xl shadow-xl border border-slate-700 overflow-hidden gradient-border">
+                            <div class="p-6">
+                                <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+                                    <i class="fas fa-plus mr-2 text-emerald-400"></i>
+                                    Agregar Idioma
+                                </h3>
+                                <form id="idiomaForm" class="space-y-4">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-semibold text-white mb-2">Idioma</label>
+                                            <input type="text" name="idioma" required
+                                                class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent bg-slate-700 text-white placeholder-slate-400"
+                                                placeholder="Ej: Inglés">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-semibold text-white mb-2">Nivel</label>
+                                            <select name="nivel" required
+                                                class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent bg-slate-700 text-white">
+                                                <option value="">Seleccionar</option>
+                                                <option value="Básico">Básico</option>
+                                                <option value="Conversacional">Conversacional</option>
+                                                <option value="Intermedio">Intermedio</option>
+                                                <option value="Avanzado">Avanzado</option>
+                                                <option value="Nativo">Nativo</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit"
+                                        class="w-full bg-gradient-to-r from-emerald-600 to-green-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-emerald-700 hover:to-green-700 transition-all duration-200">
+                                        <i class="fas fa-plus mr-2"></i>
+                                        Agregar Idioma
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Proyectos Tab -->
+                <div id="tab-proyectos" class="tab-content">
+                    <div class="space-y-6">
+                        <div id="proyectosContainer" class="hidden">
+                            <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+                                <i class="fas fa-project-diagram mr-2 text-orange-400"></i>
+                                Tus Proyectos
+                            </h3>
+                            <div id="proyectosList" class="space-y-4"></div>
+                        </div>
+
+                        <div class="bg-slate-800 rounded-2xl shadow-xl border border-slate-700 overflow-hidden gradient-border">
+                            <div class="p-6">
+                                <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+                                    <i class="fas fa-plus mr-2 text-orange-400"></i>
+                                    Agregar Proyecto
+                                </h3>
+                                <form id="proyectoForm" class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-white mb-2">Título</label>
+                                        <input type="text" name="titulo" required
+                                            class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-slate-700 text-white placeholder-slate-400"
+                                            placeholder="Nombre del proyecto">
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold text-white mb-2">Descripción</label>
+                                        <textarea name="descripcion" rows="3" required
+                                            class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-slate-700 text-white placeholder-slate-400 resize-none"
+                                            placeholder="Describe el proyecto..."></textarea>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold text-white mb-2">URL (Opcional)</label>
+                                        <input type="url" name="url"
+                                            class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-slate-700 text-white placeholder-slate-400"
+                                            placeholder="https://github.com/...">
+                                    </div>
+
+                                    <button type="submit"
+                                        class="w-full bg-gradient-to-r from-orange-600 to-red-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-orange-700 hover:to-red-700 transition-all duration-200">
+                                        <i class="fas fa-plus mr-2"></i>
+                                        Agregar Proyecto
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Publicaciones Tab -->
+                <div id="tab-publicaciones" class="tab-content">
+                    <div class="space-y-6">
+                        <div id="publicacionesContainer" class="hidden">
+                            <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+                                <i class="fas fa-book mr-2 text-pink-400"></i>
+                                Tus Publicaciones
+                            </h3>
+                            <div id="publicacionesList" class="space-y-4"></div>
+                        </div>
+
+                        <div class="bg-slate-800 rounded-2xl shadow-xl border border-slate-700 overflow-hidden gradient-border">
+                            <div class="p-6">
+                                <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+                                    <i class="fas fa-plus mr-2 text-pink-400"></i>
+                                    Agregar Publicación
+                                </h3>
+                                <form id="publicacionForm" class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-white mb-2">Título</label>
+                                        <input type="text" name="titulo" required
+                                            class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent bg-slate-700 text-white placeholder-slate-400"
+                                            placeholder="Título del artículo">
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-semibold text-white mb-2">Descripción</label>
+                                        <textarea name="descripcion" rows="3" required
+                                            class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent bg-slate-700 text-white placeholder-slate-400 resize-none"
+                                            placeholder="Resumen..."></textarea>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-semibold text-white mb-2">Fecha</label>
+                                            <input type="date" name="fecha" required
+                                                class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent bg-slate-700 text-white">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-semibold text-white mb-2">URL (Opcional)</label>
+                                            <input type="url" name="url"
+                                                class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent bg-slate-700 text-white placeholder-slate-400"
+                                                placeholder="https://medium.com/...">
+                                        </div>
+                                    </div>
+
+                                    <button type="submit"
+                                        class="w-full bg-gradient-to-r from-pink-600 to-rose-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-pink-700 hover:to-rose-700 transition-all duration-200">
+                                        <i class="fas fa-plus mr-2"></i>
+                                        Agregar Publicación
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Redes Tab -->
+                <div id="tab-redes" class="tab-content">
+                    <div class="space-y-6">
+                        <div id="redesSocialesContainer" class="hidden">
+                            <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+                                <i class="fas fa-share-alt mr-2 text-indigo-400"></i>
+                                Tus Redes Sociales
+                            </h3>
+                            <div id="redesSocialesList" class="space-y-4"></div>
+                        </div>
+
+                        <div class="bg-slate-800 rounded-2xl shadow-xl border border-slate-700 overflow-hidden gradient-border">
+                            <div class="p-6">
+                                <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+                                    <i class="fas fa-plus mr-2 text-indigo-400"></i>
+                                    Agregar Red Social
+                                </h3>
+                                <form id="redSocialForm" class="space-y-4">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-semibold text-white mb-2">Plataforma</label>
+                                            <select name="plataforma" required
+                                                class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-slate-700 text-white">
+                                                <option value="">Seleccionar</option>
+                                                <option value="LinkedIn">LinkedIn</option>
+                                                <option value="GitHub">GitHub</option>
+                                                <option value="Twitter">Twitter</option>
+                                                <option value="Facebook">Facebook</option>
+                                                <option value="Instagram">Instagram</option>
+                                                <option value="YouTube">YouTube</option>
+                                                <option value="Medium">Medium</option>
+                                                <option value="Website">Sitio Web</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-semibold text-white mb-2">URL</label>
+                                            <input type="url" name="url" required
+                                                class="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-slate-700 text-white placeholder-slate-400"
+                                                placeholder="https://...">
+                                        </div>
+                                    </div>
+
+                                    <button type="submit"
+                                        class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-200">
+                                        <i class="fas fa-plus mr-2"></i>
+                                        Agregar Red Social
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- QR Modal -->
+    <div id="qrModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center">
+        <div class="bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full mx-4 overflow-hidden border border-slate-700">
+            <div class="bg-gradient-to-r from-purple-600 to-pink-600 p-6">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-white">Tu Código QR</h3>
+                    <button onclick="toggleQRModal()" class="text-white/80 hover:text-white">
+                        <i class="fas fa-times text-xl"></i>
                     </button>
                 </div>
             </div>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Main Content Area -->
-            <div class="lg:col-span-2 space-y-8">
-                <!-- Profile Section -->
-                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                    <div class="bg-gradient-to-r from-blue-50 to-purple-50 px-6 py-4 border-b border-gray-100">
-                        <div class="flex items-center">
-                            <div class="bg-blue-100 p-2 rounded-lg mr-3">
-                                <i class="fas fa-user text-blue-600"></i>
-                            </div>
-                            <div>
-                                <h2 class="text-xl font-semibold text-gray-900">Información Personal</h2>
-                                <p class="text-sm text-gray-600">Completa tu perfil profesional</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div id="perfilStatus" class="mb-6">
-                            <div class="flex items-center">
-                                <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-600 mr-3"></div>
-                                <p class="text-gray-600">Cargando información del perfil...</p>
-                            </div>
-                        </div>
-                        <form id="perfilForm" class="hidden">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-user mr-2 text-gray-400"></i>Nombre
-                                    </label>
-                                    <input type="text" name="nombre" required
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                                        placeholder="Tu nombre">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-user-tag mr-2 text-gray-400"></i>Apellido
-                                    </label>
-                                    <input type="text" name="apellido" required
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                                        placeholder="Tu apellido">
-                                </div>
-                            </div>
-
-                            <div class="mb-6">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    <i class="fas fa-briefcase mr-2 text-gray-400"></i>Cargo Profesional
-                                </label>
-                                <input type="text" name="cargo" required
-                                    class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                                    placeholder="Ej: Desarrollador Full Stack, Ingeniero de Software">
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-envelope mr-2 text-gray-400"></i>Email
-                                    </label>
-                                    <input type="email" name="email" required
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                                        placeholder="tu@email.com">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-phone mr-2 text-gray-400"></i>Teléfono
-                                    </label>
-                                    <input type="text" name="telefono" required
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                                        placeholder="+57 300 123 4567">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-calendar mr-2 text-gray-400"></i>Fecha de Nacimiento
-                                    </label>
-                                    <input type="date" name="fecha_nacimiento" required
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-flag mr-2 text-gray-400"></i>Nacionalidad
-                                    </label>
-                                    <input type="text" name="nacionalidad" required
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                                        placeholder="Colombiana">
-                                </div>
-                            </div>
-
-                            <div class="mb-6">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    <i class="fas fa-map-marker-alt mr-2 text-gray-400"></i>Dirección
-                                </label>
-                                <input type="text" name="direccion" required
-                                    class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                                    placeholder="Calle 123 #45-67">
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-city mr-2 text-gray-400"></i>Ciudad
-                                    </label>
-                                    <input type="text" name="ciudad" required
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                                        placeholder="Bogotá">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-globe mr-2 text-gray-400"></i>País
-                                    </label>
-                                    <input type="text" name="pais" required
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                                        placeholder="Colombia">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-id-card mr-2 text-gray-400"></i>Tipo de Documento
-                                    </label>
-                                    <select name="tipo_documento" required
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
-                                        <option value="">Seleccionar</option>
-                                        <option value="CC">Cédula de Ciudadanía</option>
-                                        <option value="CE">Cédula de Extranjería</option>
-                                        <option value="PP">Pasaporte</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="mb-6">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    <i class="fas fa-hashtag mr-2 text-gray-400"></i>Número de Documento
-                                </label>
-                                <input type="text" name="numero_documento" required
-                                    class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                                    placeholder="123456789">
-                            </div>
-
-                            <div class="mb-6">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    <i class="fas fa-align-left mr-2 text-gray-400"></i>Descripción Personal
-                                </label>
-                                <textarea name="descripcion" rows="4" required
-                                    class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
-                                    placeholder="Cuéntanos sobre ti, tu experiencia y objetivos profesionales..."></textarea>
-                            </div>
-
-                            <button type="submit"
-                                class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transform hover:scale-[1.02] transition-all duration-200 shadow-lg">
-                                <i class="fas fa-save mr-2"></i>
-                                Guardar Perfil
-                            </button>
-                        </form>
+            <div class="p-6">
+                <div id="qrContainer" class="text-center">
+                    <div class="flex items-center justify-center py-8">
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-400"></div>
                     </div>
                 </div>
-
-                <!-- Work Experience Section -->
-                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                    <div class="bg-gradient-to-r from-green-50 to-teal-50 px-6 py-4 border-b border-gray-100">
-                        <div class="flex items-center">
-                            <div class="bg-green-100 p-2 rounded-lg mr-3">
-                                <i class="fas fa-briefcase text-green-600"></i>
-                            </div>
-                            <div>
-                                <h2 class="text-xl font-semibold text-gray-900">Experiencia Laboral</h2>
-                                <p class="text-sm text-gray-600">Agrega tu historial profesional</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <!-- Existing Experiences -->
-                        <div id="experienciasContainer" class="mb-6 hidden">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Tus Experiencias</h3>
-                            <div id="experienciasList" class="space-y-4">
-                                <!-- Experience cards will be loaded here -->
-                            </div>
-                        </div>
-
-                        <form id="experienciaForm">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-building mr-2 text-gray-400"></i>Empresa
-                                    </label>
-                                    <input type="text" name="empresa" required
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-                                        placeholder="Nombre de la empresa">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-user-tie mr-2 text-gray-400"></i>Cargo
-                                    </label>
-                                    <input type="text" name="cargo" required
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-                                        placeholder="Tu posición">
-                                </div>
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    <i class="fas fa-align-left mr-2 text-gray-400"></i>Descripción del Trabajo
-                                </label>
-                                <textarea name="descripcion" rows="3" required
-                                    class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 resize-none"
-                                    placeholder="Describe tus responsabilidades y logros..."></textarea>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-calendar-plus mr-2 text-gray-400"></i>Fecha de Inicio
-                                    </label>
-                                    <input type="date" name="fecha_inicio" required
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-calendar-minus mr-2 text-gray-400"></i>Fecha de Fin
-                                    </label>
-                                    <input type="date" name="fecha_fin"
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
-                                </div>
-                                <div class="flex items-end">
-                                    <label class="flex items-center">
-                                        <input type="checkbox" name="es_actual" class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded">
-                                        <span class="ml-2 text-sm text-gray-700">Trabajo actual</span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <button type="submit"
-                                class="w-full bg-gradient-to-r from-green-600 to-teal-600 text-white py-3 px-6 rounded-lg font-medium hover:from-green-700 hover:to-teal-700 transform hover:scale-[1.02] transition-all duration-200 shadow-lg">
-                                <i class="fas fa-plus mr-2"></i>
-                                Agregar Experiencia
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Education Section -->
-                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                    <div class="bg-gradient-to-r from-purple-50 to-indigo-50 px-6 py-4 border-b border-gray-100">
-                        <div class="flex items-center">
-                            <div class="bg-purple-100 p-2 rounded-lg mr-3">
-                                <i class="fas fa-graduation-cap text-purple-600"></i>
-                            </div>
-                            <div>
-                                <h2 class="text-xl font-semibold text-gray-900">Educación</h2>
-                                <p class="text-sm text-gray-600">Agrega tu formación académica</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div id="educacionesContainer" class="mb-6 hidden">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Tu Educación</h3>
-                            <div id="educacionesList" class="space-y-4">
-                                <!-- Education cards will be loaded here -->
-                            </div>
-                        </div>
-
-                        <form id="educacionForm">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-building mr-2 text-gray-400"></i>Institución
-                                    </label>
-                                    <input type="text" name="institucion" required
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
-                                        placeholder="Nombre de la institución">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-certificate mr-2 text-gray-400"></i>Título
-                                    </label>
-                                    <input type="text" name="titulo" required
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
-                                        placeholder="Título obtenido">
-                                </div>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-layer-group mr-2 text-gray-400"></i>Nivel
-                                    </label>
-                                    <select name="nivel" required
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200">
-                                        <option value="">Seleccionar nivel</option>
-                                        <option value="Bachillerato">Bachillerato</option>
-                                        <option value="Técnico">Técnico</option>
-                                        <option value="Tecnólogo">Tecnólogo</option>
-                                        <option value="Pregrado">Pregrado</option>
-                                        <option value="Especialización">Especialización</option>
-                                        <option value="Maestría">Maestría</option>
-                                        <option value="Doctorado">Doctorado</option>
-                                        <option value="Postdoctorado">Postdoctorado</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-calendar-plus mr-2 text-gray-400"></i>Fecha de Inicio
-                                    </label>
-                                    <input type="date" name="fecha_inicio" required
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-calendar-minus mr-2 text-gray-400"></i>Fecha de Fin
-                                    </label>
-                                    <input type="date" name="fecha_fin"
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200">
-                                </div>
-                            </div>
-
-                            <button type="submit"
-                                class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-3 px-6 rounded-lg font-medium hover:from-purple-700 hover:to-indigo-700 transform hover:scale-[1.02] transition-all duration-200 shadow-lg">
-                                <i class="fas fa-plus mr-2"></i>
-                                Agregar Educación
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Certifications Section -->
-                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 px-6 py-4 border-b border-gray-100">
-                        <div class="flex items-center">
-                            <div class="bg-yellow-100 p-2 rounded-lg mr-3">
-                                <i class="fas fa-award text-yellow-600"></i>
-                            </div>
-                            <div>
-                                <h2 class="text-xl font-semibold text-gray-900">Certificaciones</h2>
-                                <p class="text-sm text-gray-600">Agrega tus certificaciones y cursos</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div id="certificadosContainer" class="mb-6 hidden">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Tus Certificaciones</h3>
-                            <div id="certificadosList" class="space-y-4">
-                                <!-- Certification cards will be loaded here -->
-                            </div>
-                        </div>
-
-                        <form id="certificadoForm">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-certificate mr-2 text-gray-400"></i>Nombre de la Certificación
-                                    </label>
-                                    <input type="text" name="titulo" required
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200"
-                                        placeholder="Nombre de la certificación">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-building mr-2 text-gray-400"></i>Institución Emisora
-                                    </label>
-                                    <input type="text" name="institucion" required
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200"
-                                        placeholder="Institución que emite la certificación">
-                                </div>
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    <i class="fas fa-calendar mr-2 text-gray-400"></i>Fecha de Emisión
-                                </label>
-                                <input type="date" name="fecha_emision" required
-                                    class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-200">
-                            </div>
-
-                            <button type="submit"
-                                class="w-full bg-gradient-to-r from-yellow-600 to-orange-600 text-white py-3 px-6 rounded-lg font-medium hover:from-yellow-700 hover:to-orange-700 transform hover:scale-[1.02] transition-all duration-200 shadow-lg">
-                                <i class="fas fa-plus mr-2"></i>
-                                Agregar Certificación
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Skills Section -->
-                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                    <div class="bg-gradient-to-r from-blue-50 to-cyan-50 px-6 py-4 border-b border-gray-100">
-                        <div class="flex items-center">
-                            <div class="bg-blue-100 p-2 rounded-lg mr-3">
-                                <i class="fas fa-tools text-blue-600"></i>
-                            </div>
-                            <div>
-                                <h2 class="text-xl font-semibold text-gray-900">Habilidades</h2>
-                                <p class="text-sm text-gray-600">Agrega tus competencias técnicas</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div id="habilidadesContainer" class="mb-6 hidden">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Tus Habilidades</h3>
-                            <div id="habilidadesList" class="space-y-4">
-                                <!-- Skills cards will be loaded here -->
-                            </div>
-                        </div>
-
-                        <form id="habilidadForm">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-code mr-2 text-gray-400"></i>Habilidad
-                                    </label>
-                                    <input type="text" name="habilidad" required
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                                        placeholder="Ej: JavaScript, Python, etc.">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-chart-line mr-2 text-gray-400"></i>Nivel
-                                    </label>
-                                    <select name="nivel" required
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
-                                        <option value="">Seleccionar nivel</option>
-                                        <option value="Básico">Básico</option>
-                                        <option value="Intermedio">Intermedio</option>
-                                        <option value="Avanzado">Avanzado</option>
-                                        <option value="Experto">Experto</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <button type="submit"
-                                class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white py-3 px-6 rounded-lg font-medium hover:from-blue-700 hover:to-cyan-700 transform hover:scale-[1.02] transition-all duration-200 shadow-lg">
-                                <i class="fas fa-plus mr-2"></i>
-                                Agregar Habilidad
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Languages Section -->
-                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                    <div class="bg-gradient-to-r from-green-50 to-emerald-50 px-6 py-4 border-b border-gray-100">
-                        <div class="flex items-center">
-                            <div class="bg-green-100 p-2 rounded-lg mr-3">
-                                <i class="fas fa-language text-green-600"></i>
-                            </div>
-                            <div>
-                                <h2 class="text-xl font-semibold text-gray-900">Idiomas</h2>
-                                <p class="text-sm text-gray-600">Agrega los idiomas que dominas</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div id="idiomasContainer" class="mb-6 hidden">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Tus Idiomas</h3>
-                            <div id="idiomasList" class="space-y-4">
-                                <!-- Languages cards will be loaded here -->
-                            </div>
-                        </div>
-
-                        <form id="idiomaForm">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-globe mr-2 text-gray-400"></i>Idioma
-                                    </label>
-                                    <input type="text" name="idioma" required
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-                                        placeholder="Ej: Inglés, Español, Francés">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-chart-line mr-2 text-gray-400"></i>Nivel
-                                    </label>
-                                    <select name="nivel" required
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
-                                        <option value="">Seleccionar nivel</option>
-                                        <option value="Básico">Básico</option>
-                                        <option value="Conversacional">Conversacional</option>
-                                        <option value="Intermedio">Intermedio</option>
-                                        <option value="Avanzado">Avanzado</option>
-                                        <option value="Nativo">Nativo</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <button type="submit"
-                                class="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3 px-6 rounded-lg font-medium hover:from-green-700 hover:to-emerald-700 transform hover:scale-[1.02] transition-all duration-200 shadow-lg">
-                                <i class="fas fa-plus mr-2"></i>
-                                Agregar Idioma
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Projects Section -->
-                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                    <div class="bg-gradient-to-r from-orange-50 to-red-50 px-6 py-4 border-b border-gray-100">
-                        <div class="flex items-center">
-                            <div class="bg-orange-100 p-2 rounded-lg mr-3">
-                                <i class="fas fa-project-diagram text-orange-600"></i>
-                            </div>
-                            <div>
-                                <h2 class="text-xl font-semibold text-gray-900">Proyectos</h2>
-                                <p class="text-sm text-gray-600">Agrega tus proyectos destacados</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div id="proyectosContainer" class="mb-6 hidden">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Tus Proyectos</h3>
-                            <div id="proyectosList" class="space-y-4">
-                                <!-- Projects cards will be loaded here -->
-                            </div>
-                        </div>
-
-                        <form id="proyectoForm">
-                            <div class="mb-4">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    <i class="fas fa-tag mr-2 text-gray-400"></i>Título del Proyecto
-                                </label>
-                                <input type="text" name="titulo" required
-                                    class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
-                                    placeholder="Nombre del proyecto">
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    <i class="fas fa-align-left mr-2 text-gray-400"></i>Descripción
-                                </label>
-                                <textarea name="descripcion" rows="3" required
-                                    class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 resize-none"
-                                    placeholder="Describe el proyecto, tecnologías utilizadas, etc."></textarea>
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    <i class="fas fa-link mr-2 text-gray-400"></i>URL del Proyecto (Opcional)
-                                </label>
-                                <input type="url" name="url"
-                                    class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
-                                    placeholder="https://github.com/usuario/proyecto">
-                            </div>
-
-                            <button type="submit"
-                                class="w-full bg-gradient-to-r from-orange-600 to-red-600 text-white py-3 px-6 rounded-lg font-medium hover:from-orange-700 hover:to-red-700 transform hover:scale-[1.02] transition-all duration-200 shadow-lg">
-                                <i class="fas fa-plus mr-2"></i>
-                                Agregar Proyecto
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Publications Section -->
-                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                    <div class="bg-gradient-to-r from-pink-50 to-rose-50 px-6 py-4 border-b border-gray-100">
-                        <div class="flex items-center">
-                            <div class="bg-pink-100 p-2 rounded-lg mr-3">
-                                <i class="fas fa-book text-pink-600"></i>
-                            </div>
-                            <div>
-                                <h2 class="text-xl font-semibold text-gray-900">Publicaciones</h2>
-                                <p class="text-sm text-gray-600">Agrega tus artículos y publicaciones</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div id="publicacionesContainer" class="mb-6 hidden">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Tus Publicaciones</h3>
-                            <div id="publicacionesList" class="space-y-4">
-                                <!-- Publications cards will be loaded here -->
-                            </div>
-                        </div>
-
-                        <form id="publicacionForm">
-                            <div class="mb-4">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    <i class="fas fa-heading mr-2 text-gray-400"></i>Título de la Publicación
-                                </label>
-                                <input type="text" name="titulo" required
-                                    class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-200"
-                                    placeholder="Título del artículo o publicación">
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    <i class="fas fa-align-left mr-2 text-gray-400"></i>Descripción
-                                </label>
-                                <textarea name="descripcion" rows="3" required
-                                    class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-200 resize-none"
-                                    placeholder="Resumen o descripción de la publicación"></textarea>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-calendar mr-2 text-gray-400"></i>Fecha de Publicación
-                                    </label>
-                                    <input type="date" name="fecha" required
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-200">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-link mr-2 text-gray-400"></i>URL (Opcional)
-                                    </label>
-                                    <input type="url" name="url"
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-200"
-                                        placeholder="https://medium.com/articulo">
-                                </div>
-                            </div>
-
-                            <button type="submit"
-                                class="w-full bg-gradient-to-r from-pink-600 to-rose-600 text-white py-3 px-6 rounded-lg font-medium hover:from-pink-700 hover:to-rose-700 transform hover:scale-[1.02] transition-all duration-200 shadow-lg">
-                                <i class="fas fa-plus mr-2"></i>
-                                Agregar Publicación
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Social Networks Section -->
-                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                    <div class="bg-gradient-to-r from-indigo-50 to-purple-50 px-6 py-4 border-b border-gray-100">
-                        <div class="flex items-center">
-                            <div class="bg-indigo-100 p-2 rounded-lg mr-3">
-                                <i class="fas fa-share-alt text-indigo-600"></i>
-                            </div>
-                            <div>
-                                <h2 class="text-xl font-semibold text-gray-900">Redes Sociales</h2>
-                                <p class="text-sm text-gray-600">Agrega tus perfiles sociales</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div id="redesSocialesContainer" class="mb-6 hidden">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Tus Redes Sociales</h3>
-                            <div id="redesSocialesList" class="space-y-4">
-                                <!-- Social networks cards will be loaded here -->
-                            </div>
-                        </div>
-
-                        <form id="redSocialForm">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-hashtag mr-2 text-gray-400"></i>Plataforma
-                                    </label>
-                                    <select name="plataforma" required
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200">
-                                        <option value="">Seleccionar plataforma</option>
-                                        <option value="LinkedIn">LinkedIn</option>
-                                        <option value="GitHub">GitHub</option>
-                                        <option value="Twitter">Twitter</option>
-                                        <option value="Facebook">Facebook</option>
-                                        <option value="Instagram">Instagram</option>
-                                        <option value="YouTube">YouTube</option>
-                                        <option value="Medium">Medium</option>
-                                        <option value="Website">Sitio Web</option>
-                                        <option value="Otro">Otro</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <i class="fas fa-link mr-2 text-gray-400"></i>URL del Perfil
-                                    </label>
-                                    <input type="url" name="url" required
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
-                                        placeholder="https://linkedin.com/in/tu-perfil">
-                                </div>
-                            </div>
-
-                            <button type="submit"
-                                class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 px-6 rounded-lg font-medium hover:from-indigo-700 hover:to-purple-700 transform hover:scale-[1.02] transition-all duration-200 shadow-lg">
-                                <i class="fas fa-plus mr-2"></i>
-                                Agregar Red Social
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sidebar -->
-            <div class="space-y-6">
-                <!-- QR Code Card -->
-                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 px-6 py-4 border-b border-gray-100">
-                        <div class="flex items-center">
-                            <div class="bg-purple-100 p-2 rounded-lg mr-3">
-                                <i class="fas fa-qrcode text-purple-600"></i>
-                            </div>
-                            <div>
-                                <h2 class="text-lg font-semibold text-gray-900">Mi Código QR</h2>
-                                <p class="text-sm text-gray-600">Comparte tu perfil fácilmente</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div id="qrContainer" class="text-center">
-                            <div class="flex items-center justify-center">
-                                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
-                            </div>
-                            <p class="text-gray-600 mt-4">Generando código QR...</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Profile Completion Card -->
-                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                    <div class="bg-gradient-to-r from-orange-50 to-red-50 px-6 py-4 border-b border-gray-100">
-                        <div class="flex items-center">
-                            <div class="bg-orange-100 p-2 rounded-lg mr-3">
-                                <i class="fas fa-chart-pie text-orange-600"></i>
-                            </div>
-                            <div>
-                                <h2 class="text-lg font-semibold text-gray-900">Progreso</h2>
-                                <p class="text-sm text-gray-600">Estado de tu perfil</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div id="completionStatus">
-                            <div class="text-center">
-                                <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-orange-600 mx-auto"></div>
-                                <p class="text-gray-600 mt-2">Calculando progreso...</p>
-                            </div>
-                        </div>
+                <div id="cvUrlContainer" class="mt-4 hidden">
+                    <p class="text-sm text-slate-300 mb-2">URL de tu CV:</p>
+                    <div class="flex items-center bg-slate-700 rounded-lg p-3">
+                        <span id="cvUrl" class="text-sm text-white truncate flex-1"></span>
+                        <button onclick="copyCVUrl()" class="ml-2 text-purple-400 hover:text-purple-300">
+                            <i class="fas fa-copy"></i>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
+
+    <!-- Mobile Overlay -->
+    <div id="sidebarOverlay" class="lg:hidden fixed inset-0 bg-black/50 z-30 hidden" onclick="toggleMobileSidebar()"></div>
 
     <script>
+        // Toggle Mobile Sidebar
+        function toggleMobileSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const menuIcon = document.getElementById('menuIcon');
+
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+
+            // Toggle icon direction
+            if (sidebar.classList.contains('-translate-x-full')) {
+                // Sidebar is closed
+                menuIcon.classList.remove('fa-chevron-left');
+                menuIcon.classList.add('fa-chevron-right');
+            } else {
+                // Sidebar is open
+                menuIcon.classList.remove('fa-chevron-right');
+                menuIcon.classList.add('fa-chevron-left');
+            }
+        }
+
         const token = localStorage.getItem('token');
         if (!token) {
             window.location.href = '/login';
         }
 
-        async function getFormData() {
-            try {
-                const requestData = await fetch('/api/perfiles', {
-                        headers: {
-                            'Authorization': 'Bearer ' + token,
-                            'Content-Type': 'application/json'
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
+        // Tab titles
+        const tabTitles = {
+            'perfil': { title: 'Perfil', subtitle: 'Gestiona tu información personal' },
+            'experiencia': { title: 'Experiencia', subtitle: 'Agrega tu historial profesional' },
+            'educacion': { title: 'Educación', subtitle: 'Tu formación académica' },
+            'certificaciones': { title: 'Certificaciones', subtitle: 'Tus certificaciones y cursos' },
+            'habilidades': { title: 'Habilidades', subtitle: 'Tus competencias técnicas' },
+            'idiomas': { title: 'Idiomas', subtitle: 'Idiomas que dominas' },
+            'proyectos': { title: 'Proyectos', subtitle: 'Proyectos destacados' },
+            'publicaciones': { title: 'Publicaciones', subtitle: 'Tus artículos y publicaciones' },
+            'redes': { title: 'Redes Sociales', subtitle: 'Tus perfiles sociales' }
+        };
 
-                        const profileForm = document.getElementById('perfilForm');
-                        Object.keys(data).forEach(key => {
-                            if (profileForm.elements[key]) {
-                                profileForm.elements[key].value = data[key];
-                                // console.log(data[key]);
-                            }
-                        });
-                        Object.keys(data.usuario).forEach(key => {
-                            if (profileForm.elements[key]) {
-                                profileForm.elements[key].value = data.usuario[key];
-                                // console.log(data[key]);
-                            }
-                        });
-                        console.log(data.usuario);
-                    })
-                if (!requestData.ok) {
-                    throw new Error('Error de autenticación');
-                }
-            } catch (error) {
-                console.error(error);
-                showErrorMessage();
+        // Close sidebar when switching tabs on mobile
+        function switchTab(tabName) {
+            // Close mobile sidebar when switching tabs
+            if (window.innerWidth < 1024) {
+                toggleMobileSidebar();
             }
+            // Update nav
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.tab === tabName) {
+                    item.classList.add('active');
+                }
+            });
+
+            // Update content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById('tab-' + tabName).classList.add('active');
+
+            // Update title
+            document.getElementById('tabTitle').textContent = tabTitles[tabName].title;
+            document.getElementById('tabSubtitle').textContent = tabTitles[tabName].subtitle;
+        }
+
+        // Toggle QR Modal
+        function toggleQRModal() {
+            const modal = document.getElementById('qrModal');
+            modal.classList.toggle('hidden');
+            if (!modal.classList.contains('hidden') && !document.getElementById('qrContainer').innerHTML.includes('img')) {
+                loadQRCode();
+            }
+        }
+
+        // Toggle Progress Modal
+        function toggleProgressModal() {
+            const modal = document.getElementById('progressModal');
+            if (modal) {
+                modal.classList.toggle('hidden');
+            } else {
+                showProgressDetails();
+            }
+        }
+
+        // Show progress details
+        function showProgressDetails() {
+            const progressDetails = `
+                <div id="progressModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center">
+                    <div class="bg-slate-800 rounded-2xl shadow-2xl max-w-sm w-full mx-4 overflow-hidden border border-slate-700">
+                        <div class="bg-gradient-to-r from-blue-600 to-purple-600 p-4">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-lg font-bold text-white">Progreso del CV</h3>
+                                <button onclick="toggleProgressModal()" class="text-white/80 hover:text-white">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center justify-center mb-4">
+                                <div class="relative w-24 h-24">
+                                    <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                        <path class="text-slate-600" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3" />
+                                        <path id="progressRing" class="text-blue-500" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3" />
+                                    </svg>
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <span id="progressPercent" class="text-2xl font-bold text-white">0%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="progressList" class="space-y-2 text-sm">
+                                <div class="flex justify-between text-slate-300">
+                                    <span>Cargando...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', progressDetails);
+            setTimeout(() => document.getElementById('progressModal').classList.remove('hidden'), 10);
+            loadProgressDetails();
+        }
+
+        // Load progress details
+        async function loadProgressDetails() {
+            const sections = [
+                { key: 'perfil', name: 'Perfil', icon: 'fa-user' },
+                { key: 'experiencia', name: 'Experiencia', icon: 'fa-briefcase' },
+                { key: 'educacion', name: 'Educación', icon: 'fa-graduation-cap' },
+                { key: 'certificaciones', name: 'Certificaciones', icon: 'fa-award' },
+                { key: 'habilidades', name: 'Habilidades', icon: 'fa-tools' },
+                { key: 'idiomas', name: 'Idiomas', icon: 'fa-language' },
+                { key: 'proyectos', name: 'Proyectos', icon: 'fa-project-diagram' },
+                { key: 'publicaciones', name: 'Publicaciones', icon: 'fa-book' },
+                { key: 'redes', name: 'Redes Sociales', icon: 'fa-share-alt' }
+            ];
+
+            let completed = 0;
+            const results = await Promise.all(sections.map(async (section) => {
+                let hasData = false;
+                let endpoint = '';
+
+                switch(section.key) {
+                    case 'perfil': endpoint = '/api/perfiles'; break;
+                    case 'experiencia': endpoint = '/api/experiencias'; break;
+                    case 'educacion': endpoint = '/api/educaciones'; break;
+                    case 'certificaciones': endpoint = '/api/certificados'; break;
+                    case 'habilidades': endpoint = '/api/habilidades'; break;
+                    case 'idiomas': endpoint = '/api/idiomas'; break;
+                    case 'proyectos': endpoint = '/api/proyectos'; break;
+                    case 'publicaciones': endpoint = '/api/publicaciones'; break;
+                    case 'redes': endpoint = '/api/redes-sociales'; break;
+                }
+
+                try {
+                    const res = await fetch(endpoint, { headers: { 'Authorization': 'Bearer ' + token } });
+                    if (res.ok) {
+                        const data = await res.json();
+                        hasData = section.key === 'perfil' ? !!data : (Array.isArray(data) && data.length > 0);
+                    }
+                } catch (e) {}
+
+                if (hasData) completed++;
+                return { ...section, completed: hasData };
+            }));
+
+            const percent = Math.round((completed / sections.length) * 100);
+
+            // Update ring
+            document.getElementById('progressRing').setAttribute('stroke-dasharray', `${percent}, 100`);
+            document.getElementById('progressPercent').textContent = percent + '%';
+
+            // Update list
+            const listHtml = results.map(item => `
+                <div class="flex items-center justify-between p-2 rounded-lg ${item.completed ? 'bg-green-900/30' : 'bg-slate-700'}">
+                    <div class="flex items-center">
+                        <i class="fas ${item.icon} ${item.completed ? 'text-green-400' : 'text-slate-400'} mr-2"></i>
+                        <span class="${item.completed ? 'text-green-400' : 'text-slate-400'}">${item.name}</span>
+                    </div>
+                    <i class="fas ${item.completed ? 'fa-check-circle text-green-400' : 'fa-circle text-slate-500'}"></i>
+                </div>
+            `).join('');
+            document.getElementById('progressList').innerHTML = listHtml;
+        }
+
+        // Copy CV URL
+        function copyCVUrl() {
+            const url = document.getElementById('cvUrl').textContent;
+            navigator.clipboard.writeText(url).then(() => {
+                showNotification('URL copiada al portapapeles', 'success');
+            });
+        }
+
+        // Load QR Code
+        function loadQRCode() {
+            fetch('/api/usuarios/me', {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(user => {
+                if (user.qr_code) {
+                    document.getElementById('qrContainer').innerHTML = `
+                        <img src="${user.qr_code}" alt="QR Code" class="w-48 h-48 mx-auto">
+                    `;
+                    document.getElementById('cvUrl').textContent = window.location.origin + '/cv/' + user.slug;
+                    document.getElementById('cvUrlContainer').classList.remove('hidden');
+                }
+            });
         }
 
         // Fetch user data
@@ -826,15 +1073,16 @@
                     }
                 });
 
-                if (!response.ok) {
-                    throw new Error('Error de autenticación');
-                }
+                if (!response.ok) throw new Error('Error de autenticación');
 
                 const user = await response.json();
+
+                // Update user info
+                document.getElementById('userName').textContent = user.nombre + ' ' + user.apellido;
+
                 updateProfileStatus();
-                updateQRCode(user);
                 loadProfileForm(user);
-                updateCompletionStatus();
+                updateProgress();
                 loadExperiencias();
                 loadEducaciones();
                 loadCertificados();
@@ -852,96 +1100,33 @@
 
         function updateProfileStatus() {
             const perfilStatus = document.getElementById('perfilStatus');
-            fetch('/api/perfiles', {
-                    headers: {
-                        'Authorization': 'Bearer ' + token
-                    }
-                })
-                .then(response => response.ok ? response.json() : null)
+            fetch('/api/perfiles', { headers: { 'Authorization': 'Bearer ' + token } })
+                .then(res => res.ok ? res.json() : null)
                 .then(perfil => {
                     if (perfil) {
                         perfilStatus.innerHTML = `
-                        <div class="flex items-center p-4 bg-green-50 rounded-lg border border-green-200">
-                            <i class="fas fa-check-circle text-green-600 mr-3"></i>
-                            <div>
-                                <p class="text-green-800 font-medium">Perfil completado</p>
-                                <p class="text-green-600 text-sm">Tu información está actualizada</p>
-                            </div>
-                        </div>
-                    `;
+                            <div class="flex items-center p-4 bg-green-900/30 rounded-xl border border-green-700">
+                                <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                                <div>
+                                    <p class="text-green-400 font-medium">Perfil completado</p>
+                                    <p class="text-green-300/70 text-sm">Tu información está actualizada</p>
+                                </div>
+                            </div>`;
                     } else {
                         perfilStatus.innerHTML = `
-                        <div class="flex items-center p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-                            <i class="fas fa-exclamation-triangle text-yellow-600 mr-3"></i>
-                            <div>
-                                <p class="text-yellow-800 font-medium">Perfil incompleto</p>
-                                <p class="text-yellow-600 text-sm">Completa la información para continuar</p>
-                            </div>
-                        </div>
-                    `;
+                            <div class="flex items-center p-4 bg-yellow-900/30 rounded-xl border border-yellow-700">
+                                <i class="fas fa-exclamation-triangle text-yellow-400 mr-3"></i>
+                                <div>
+                                    <p class="text-yellow-400 font-medium">Perfil incompleto</p>
+                                    <p class="text-yellow-300/70 text-sm">Completa la información para continuar</p>
+                                </div>
+                            </div>`;
                     }
-                })
-                .catch(() => {
-                    perfilStatus.innerHTML = `
-                    <div class="flex items-center p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-                        <i class="fas fa-exclamation-triangle text-yellow-600 mr-3"></i>
-                        <div>
-                            <p class="text-yellow-800 font-medium">Completa tu perfil</p>
-                            <p class="text-yellow-600 text-sm">Llena el formulario para empezar</p>
-                        </div>
-                    </div>
-                `;
                 });
-        }
-
-        function updateQRCode(user) {
-            const qrContainer = document.getElementById('qrContainer');
-
-            if (user.qr_code) {
-                qrContainer.innerHTML = `
-                    <div class="text-center">
-                        <div class="bg-white p-4 rounded-xl shadow-inner border border-gray-100 inline-block">
-                            <img src="${user.qr_code}" alt="QR Code" class="w-32 h-32 mx-auto">
-                        </div>
-                        <div class="mt-4 p-3 bg-gray-50 rounded-lg">
-                            <p class="text-xs text-gray-600 mb-2">URL de tu CV:</p>
-                            <div class="flex items-center justify-between bg-white p-2 rounded border">
-                                <span class="text-sm text-gray-700 truncate flex-1">
-                                    ${window.location.origin}/cv/${user.slug}
-                                </span>
-                                <button onclick="copyCVUrl('${user.slug}')"
-                                        class="ml-2 text-gray-500 hover:text-gray-700 transition-colors">
-                                    <i class="fas fa-copy"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <button onclick="generateQr()"
-                                class="mt-3 text-purple-600 hover:text-purple-800 text-sm font-medium transition-colors">
-                            <i class="fas fa-sync-alt mr-1"></i>
-                            Regenerar QR
-                        </button>
-                    </div>
-                `;
-            } else {
-                qrContainer.innerHTML = `
-                    <div class="text-center">
-                        <div class="bg-gray-100 rounded-xl p-8 mb-4">
-                            <i class="fas fa-qrcode text-4xl text-gray-400"></i>
-                        </div>
-                        <p class="text-gray-600 mb-4">Código QR no disponible</p>
-                        <button onclick="generateQr()"
-                                class="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-2 px-4 rounded-lg font-medium hover:from-purple-700 hover:to-pink-700 transition-all duration-200">
-                            <i class="fas fa-magic mr-2"></i>
-                            Generar Código QR
-                        </button>
-                    </div>
-                `;
-            }
         }
 
         function loadProfileForm(user) {
             document.getElementById('perfilForm').classList.remove('hidden');
-
             if (user.perfil) {
                 const form = document.getElementById('perfilForm');
                 Object.keys(user.perfil).forEach(key => {
@@ -951,60 +1136,44 @@
             }
         }
 
-        function updateCompletionStatus() {
-            // This would calculate and display profile completion percentage
-            document.getElementById('completionStatus').innerHTML = `
-                <div class="text-center">
-                    <div class="w-20 h-20 mx-auto mb-4 relative">
-                        <svg class="w-20 h-20 transform -rotate-90" viewBox="0 0 36 36">
-                            <path class="text-gray-200" stroke="currentColor" stroke-width="3" fill="none"
-                                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-                            <path class="text-blue-600" stroke="currentColor" stroke-width="3" fill="none"
-                                  stroke-dasharray="60, 100"
-                                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-                        </svg>
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <span class="text-sm font-bold text-gray-700">60%</span>
-                        </div>
-                    </div>
-                    <p class="text-gray-600">Perfil en progreso</p>
-                    <p class="text-xs text-gray-500 mt-1">Completa más secciones para mejorar tu CV</p>
-                </div>
-            `;
+        function updateProgress() {
+            let completed = 0;
+            const total = 9;
+
+            Promise.all([
+                fetch('/api/perfiles', { headers: { 'Authorization': 'Bearer ' + token } }).then(r => r.ok && completed++),
+                fetch('/api/experiencias', { headers: { 'Authorization': 'Bearer ' + token } }).then(r => { if (r.ok) r.json().then(d => { if (d.length) completed++ }) }),
+                fetch('/api/educaciones', { headers: { 'Authorization': 'Bearer ' + token } }).then(r => { if (r.ok) r.json().then(d => { if (d.length) completed++ }) }),
+                fetch('/api/certificados', { headers: { 'Authorization': 'Bearer ' + token } }).then(r => { if (r.ok) r.json().then(d => { if (d.length) completed++ }) }),
+                fetch('/api/habilidades', { headers: { 'Authorization': 'Bearer ' + token } }).then(r => { if (r.ok) r.json().then(d => { if (d.length) completed++ }) }),
+                fetch('/api/idiomas', { headers: { 'Authorization': 'Bearer ' + token } }).then(r => { if (r.ok) r.json().then(d => { if (d.length) completed++ }) }),
+                fetch('/api/proyectos', { headers: { 'Authorization': 'Bearer ' + token } }).then(r => { if (r.ok) r.json().then(d => { if (d.length) completed++ }) }),
+                fetch('/api/publicaciones', { headers: { 'Authorization': 'Bearer ' + token } }).then(r => { if (r.ok) r.json().then(d => { if (d.length) completed++ }) }),
+                fetch('/api/redes-sociales', { headers: { 'Authorization': 'Bearer ' + token } }).then(r => { if (r.ok) r.json().then(d => { if (d.length) completed++ }) })
+            ]).then(() => {
+                const percent = Math.round((completed / total) * 100);
+                document.getElementById('progressBar').style.width = percent + '%';
+                document.getElementById('progressText').textContent = percent + '%';
+                // Update mobile badge
+                const badge = document.getElementById('progressBadge');
+                if (badge) badge.textContent = percent;
+            });
         }
 
         function showErrorMessage() {
             document.getElementById('perfilStatus').innerHTML = `
-                <div class="flex items-center p-4 bg-red-50 rounded-lg border border-red-200">
-                    <i class="fas fa-exclamation-circle text-red-600 mr-3"></i>
+                <div class="flex items-center p-4 bg-red-900/30 rounded-xl border border-red-700">
+                    <i class="fas fa-exclamation-circle text-red-400 mr-3"></i>
                     <div>
-                        <p class="text-red-800 font-medium">Error de conexión</p>
-                        <p class="text-red-600 text-sm">No se pudieron cargar los datos</p>
+                        <p class="text-red-400 font-medium">Error de conexión</p>
+                        <p class="text-red-300/70 text-sm">No se pudieron cargar los datos</p>
                     </div>
-                </div>
-            `;
-        }
-
-        // Copy CV URL function
-        function copyCVUrl(slug) {
-            const url = `${window.location.origin}/cv/${slug}`;
-            navigator.clipboard.writeText(url).then(() => {
-                // Show success message
-                const button = event.target.closest('button');
-                const originalHTML = button.innerHTML;
-                button.innerHTML = '<i class="fas fa-check"></i>';
-                button.classList.add('text-green-600');
-                setTimeout(() => {
-                    button.innerHTML = originalHTML;
-                    button.classList.remove('text-green-600');
-                }, 2000);
-            });
+                </div>`;
         }
 
         // Logout function
         async function logout() {
             try {
-                const token = localStorage.getItem('token');
                 await fetch('/api/logout', {
                     method: 'POST',
                     headers: {
@@ -1017,17 +1186,14 @@
                 console.error('Logout error:', error);
             } finally {
                 localStorage.removeItem('token');
-                localStorage.removeItem('tokenExpiry');
                 window.location.href = '/login';
             }
         }
 
-        // Token refresh logic - refresh every hour
-        const TOKEN_REFRESH_INTERVAL = 60 * 60 * 1000; // 1 hour in milliseconds
-
+        // Token refresh
+        const TOKEN_REFRESH_INTERVAL = 60 * 60 * 1000;
         async function refreshToken() {
             try {
-                const token = localStorage.getItem('token');
                 const response = await fetch('/api/refresh-token', {
                     method: 'POST',
                     headers: {
@@ -1036,1292 +1202,480 @@
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     }
                 });
-
                 if (response.ok) {
                     const data = await response.json();
                     localStorage.setItem('token', data.token);
-                    console.log('Token refreshed successfully');
                 } else if (response.status === 401) {
-                    // Token expired or invalid
                     logout();
                 }
             } catch (error) {
                 console.error('Token refresh error:', error);
             }
         }
-
-        // Start token refresh timer (every hour)
         setInterval(refreshToken, TOKEN_REFRESH_INTERVAL);
 
-        // Load experiences
+        // Load data functions
         async function loadExperiencias() {
-            try {
-                const response = await fetch('/api/experiencias', {
-                    headers: {
-                        'Authorization': 'Bearer ' + token,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (response.ok) {
-                    const experiencias = await response.json();
-                    displayExperiencias(experiencias);
-                }
-            } catch (error) {
-                console.error('Error loading experiences:', error);
+            const res = await fetch('/api/experiencias', { headers: { 'Authorization': 'Bearer ' + token } });
+            if (res.ok) {
+                const data = await res.json();
+                displayExperiencias(data);
             }
         }
 
-        // Load education
         async function loadEducaciones() {
-            try {
-                const response = await fetch('/api/educaciones', {
-                    headers: {
-                        'Authorization': 'Bearer ' + token,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (response.ok) {
-                    const educaciones = await response.json();
-                    displayEducaciones(educaciones);
-                }
-            } catch (error) {
-                console.error('Error loading education:', error);
+            const res = await fetch('/api/educaciones', { headers: { 'Authorization': 'Bearer ' + token } });
+            if (res.ok) {
+                const data = await res.json();
+                displayEducaciones(data);
             }
         }
 
-        // Load certifications
         async function loadCertificados() {
-            try {
-                const response = await fetch('/api/certificados', {
-                    headers: {
-                        'Authorization': 'Bearer ' + token,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (response.ok) {
-                    const certificados = await response.json();
-                    displayCertificados(certificados);
-                }
-            } catch (error) {
-                console.error('Error loading certifications:', error);
+            const res = await fetch('/api/certificados', { headers: { 'Authorization': 'Bearer ' + token } });
+            if (res.ok) {
+                const data = await res.json();
+                displayCertificados(data);
             }
         }
 
-        // Load skills
         async function loadHabilidades() {
-            try {
-                const response = await fetch('/api/habilidades', {
-                    headers: {
-                        'Authorization': 'Bearer ' + token,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (response.ok) {
-                    const habilidades = await response.json();
-                    displayHabilidades(habilidades);
-                }
-            } catch (error) {
-                console.error('Error loading skills:', error);
+            const res = await fetch('/api/habilidades', { headers: { 'Authorization': 'Bearer ' + token } });
+            if (res.ok) {
+                const data = await res.json();
+                displayHabilidades(data);
             }
         }
 
-        // Load languages
         async function loadIdiomas() {
-            try {
-                const response = await fetch('/api/idiomas', {
-                    headers: {
-                        'Authorization': 'Bearer ' + token,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (response.ok) {
-                    const idiomas = await response.json();
-                    displayIdiomas(idiomas);
-                }
-            } catch (error) {
-                console.error('Error loading languages:', error);
+            const res = await fetch('/api/idiomas', { headers: { 'Authorization': 'Bearer ' + token } });
+            if (res.ok) {
+                const data = await res.json();
+                displayIdiomas(data);
             }
         }
 
-        // Load projects
         async function loadProyectos() {
-            try {
-                const response = await fetch('/api/proyectos', {
-                    headers: {
-                        'Authorization': 'Bearer ' + token,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (response.ok) {
-                    const proyectos = await response.json();
-                    displayProyectos(proyectos);
-                }
-            } catch (error) {
-                console.error('Error loading projects:', error);
+            const res = await fetch('/api/proyectos', { headers: { 'Authorization': 'Bearer ' + token } });
+            if (res.ok) {
+                const data = await res.json();
+                displayProyectos(data);
             }
         }
 
-        // Load publications
         async function loadPublicaciones() {
-            try {
-                const response = await fetch('/api/publicaciones', {
-                    headers: {
-                        'Authorization': 'Bearer ' + token,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (response.ok) {
-                    const publicaciones = await response.json();
-                    displayPublicaciones(publicaciones);
-                }
-            } catch (error) {
-                console.error('Error loading publications:', error);
+            const res = await fetch('/api/publicaciones', { headers: { 'Authorization': 'Bearer ' + token } });
+            if (res.ok) {
+                const data = await res.json();
+                displayPublicaciones(data);
             }
         }
 
-        // Load social networks
         async function loadRedesSociales() {
-            try {
-                const response = await fetch('/api/redes-sociales', {
-                    headers: {
-                        'Authorization': 'Bearer ' + token,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (response.ok) {
-                    const redesSociales = await response.json();
-                    displayRedesSociales(redesSociales);
-                }
-            } catch (error) {
-                console.error('Error loading social networks:', error);
+            const res = await fetch('/api/redes-sociales', { headers: { 'Authorization': 'Bearer ' + token } });
+            if (res.ok) {
+                const data = await res.json();
+                displayRedesSociales(data);
             }
         }
 
-        function displayExperiencias(experiencias) {
+        // Display functions
+        function displayExperiencias(data) {
             const container = document.getElementById('experienciasContainer');
             const list = document.getElementById('experienciasList');
-
-            if (experiencias.length > 0) {
+            if (data.length > 0) {
                 container.classList.remove('hidden');
-                list.innerHTML = experiencias.map(exp => createExperienciaCard(exp)).join('');
+                list.innerHTML = data.map(exp => createCard('experiencia', exp, exp.cargo + ' - ' + exp.empresa, exp.descripcion, 'fa-briefcase', 'green')).join('');
             } else {
                 container.classList.add('hidden');
             }
         }
 
-        function displayEducaciones(educaciones) {
+        function displayEducaciones(data) {
             const container = document.getElementById('educacionesContainer');
             const list = document.getElementById('educacionesList');
-
-            if (educaciones.length > 0) {
+            if (data.length > 0) {
                 container.classList.remove('hidden');
-                list.innerHTML = educaciones.map(edu => createEducacionCard(edu)).join('');
+                list.innerHTML = data.map(edu => createCard('educacion', edu, edu.titulo + ' - ' + edu.institucion, edu.nivel, 'fa-graduation-cap', 'purple')).join('');
             } else {
                 container.classList.add('hidden');
             }
         }
 
-        function displayCertificados(certificados) {
+        function displayCertificados(data) {
             const container = document.getElementById('certificadosContainer');
             const list = document.getElementById('certificadosList');
-
-            if (certificados.length > 0) {
+            if (data.length > 0) {
                 container.classList.remove('hidden');
-                list.innerHTML = certificados.map(cert => createCertificadoCard(cert)).join('');
+                list.innerHTML = data.map(cert => createCard('certificado', cert, cert.titulo, cert.institucion, 'fa-award', 'yellow')).join('');
             } else {
                 container.classList.add('hidden');
             }
         }
 
-        function displayHabilidades(habilidades) {
+        function displayHabilidades(data) {
             const container = document.getElementById('habilidadesContainer');
             const list = document.getElementById('habilidadesList');
-
-            if (habilidades.length > 0) {
+            if (data.length > 0) {
                 container.classList.remove('hidden');
-                list.innerHTML = habilidades.map(hab => createHabilidadCard(hab)).join('');
+                list.innerHTML = data.map(hab => `
+                    <div class="bg-slate-700 border border-slate-600 rounded-xl p-4 flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-cyan-600/30 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-tools text-cyan-400"></i>
+                            </div>
+                            <span class="font-medium text-white">${hab.habilidad}</span>
+                            <span class="ml-3 px-3 py-1 bg-cyan-600/30 text-cyan-400 rounded-full text-sm">${hab.nivel}</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="deleteHabilidad(${hab.id})" class="text-red-400 hover:text-red-300"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `).join('');
             } else {
                 container.classList.add('hidden');
             }
         }
 
-        function displayIdiomas(idiomas) {
+        function displayIdiomas(data) {
             const container = document.getElementById('idiomasContainer');
             const list = document.getElementById('idiomasList');
-
-            if (idiomas.length > 0) {
+            if (data.length > 0) {
                 container.classList.remove('hidden');
-                list.innerHTML = idiomas.map(idioma => createIdiomaCard(idioma)).join('');
+                list.innerHTML = data.map(idioma => `
+                    <div class="bg-slate-700 border border-slate-600 rounded-xl p-4 flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-emerald-600/30 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-language text-emerald-400"></i>
+                            </div>
+                            <span class="font-medium text-white">${idioma.idioma}</span>
+                            <span class="ml-3 px-3 py-1 bg-emerald-600/30 text-emerald-400 rounded-full text-sm">${idioma.nivel}</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="deleteIdioma(${idioma.id})" class="text-red-400 hover:text-red-300"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `).join('');
             } else {
                 container.classList.add('hidden');
             }
         }
 
-        function displayProyectos(proyectos) {
+        function displayProyectos(data) {
             const container = document.getElementById('proyectosContainer');
             const list = document.getElementById('proyectosList');
-
-            if (proyectos.length > 0) {
+            if (data.length > 0) {
                 container.classList.remove('hidden');
-                list.innerHTML = proyectos.map(proy => createProyectoCard(proy)).join('');
+                list.innerHTML = data.map(proy => createCard('proyecto', proy, proy.titulo, proy.descripcion, 'fa-project-diagram', 'orange', proy.url)).join('');
             } else {
                 container.classList.add('hidden');
             }
         }
 
-        function displayPublicaciones(publicaciones) {
+        function displayPublicaciones(data) {
             const container = document.getElementById('publicacionesContainer');
             const list = document.getElementById('publicacionesList');
-
-            if (publicaciones.length > 0) {
+            if (data.length > 0) {
                 container.classList.remove('hidden');
-                list.innerHTML = publicaciones.map(pub => createPublicacionCard(pub)).join('');
+                list.innerHTML = data.map(pub => createCard('publicacion', pub, pub.titulo, pub.descripcion, 'fa-book', 'pink', pub.url)).join('');
             } else {
                 container.classList.add('hidden');
             }
         }
 
-        function displayRedesSociales(redesSociales) {
+        function displayRedesSociales(data) {
             const container = document.getElementById('redesSocialesContainer');
             const list = document.getElementById('redesSocialesList');
-
-            if (redesSociales.length > 0) {
+            if (data.length > 0) {
                 container.classList.remove('hidden');
-                list.innerHTML = redesSociales.map(red => createRedSocialCard(red)).join('');
-            } else {
-                container.classList.add('hidden');
-            }
-        }
-
-        function createExperienciaCard(exp) {
-            const fechaFin = exp.es_actual ? 'Presente' : (exp.fecha_fin || '');
-            return `
-                <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm experiencia-card" data-id="${exp.id}">
-                    <div class="flex justify-between items-start mb-3">
-                        <div class="flex-1">
-                            <h4 class="text-lg font-semibold text-gray-900 editable" data-field="cargo">${exp.cargo}</h4>
-                            <p class="text-green-600 font-medium editable" data-field="empresa">${exp.empresa}</p>
-                        </div>
-                        <div class="flex space-x-2">
-                            <button onclick="editExperiencia(${exp.id})" class="text-blue-600 hover:text-blue-800 transition-colors">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button onclick="deleteExperiencia(${exp.id})" class="text-red-600 hover:text-red-800 transition-colors">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="text-sm text-gray-600 mb-2">
-                        <span class="editable" data-field="fecha_inicio">${exp.fecha_inicio}</span>
-                        <span> - </span>
-                        <span class="editable" data-field="fecha_fin">${fechaFin}</span>
-                        ${exp.es_actual ? '<span class="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">Actual</span>' : ''}
-                    </div>
-                    <p class="text-gray-700 editable" data-field="descripcion">${exp.descripcion}</p>
-                </div>
-            `;
-        }
-
-        function createEducacionCard(edu) {
-            return `
-                <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm educacion-card" data-id="${edu.id}">
-                    <div class="flex justify-between items-start mb-3">
-                        <div class="flex-1">
-                            <h4 class="text-lg font-semibold text-gray-900 editable" data-field="titulo">${edu.titulo}</h4>
-                            <p class="text-purple-600 font-medium editable" data-field="institucion">${edu.institucion}</p>
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-purple-100 text-purple-800 font-medium editable" data-field="nivel">${edu.nivel}</span>
-                        </div>
-                        <div class="flex space-x-2">
-                            <button onclick="editEducacion(${edu.id})" class="text-blue-600 hover:text-blue-800 transition-colors">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button onclick="deleteEducacion(${edu.id})" class="text-red-600 hover:text-red-800 transition-colors">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="text-sm text-gray-600">
-                        <span class="editable" data-field="fecha_inicio">${edu.fecha_inicio}</span>
-                        <span> - </span>
-                        <span class="editable" data-field="fecha_fin">${edu.fecha_fin || 'Presente'}</span>
-                    </div>
-                </div>
-            `;
-        }
-
-        function createCertificadoCard(cert) {
-            return `
-                <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm certificado-card" data-id="${cert.id}">
-                    <div class="flex justify-between items-start mb-3">
-                        <div class="flex-1">
-                            <h4 class="text-lg font-semibold text-gray-900 editable" data-field="titulo">${cert.titulo}</h4>
-                            <p class="text-yellow-600 font-medium editable" data-field="institucion">${cert.institucion}</p>
-                        </div>
-                        <div class="flex space-x-2">
-                            <button onclick="editCertificado(${cert.id})" class="text-blue-600 hover:text-blue-800 transition-colors">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button onclick="deleteCertificado(${cert.id})" class="text-red-600 hover:text-red-800 transition-colors">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="text-sm text-gray-600">
-                        <i class="fas fa-calendar mr-1"></i>
-                        <span class="editable" data-field="fecha_emision">${cert.fecha_emision}</span>
-                    </div>
-                </div>
-            `;
-        }
-
-        function createHabilidadCard(hab) {
-            return `
-                <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm habilidad-card" data-id="${hab.id}">
-                    <div class="flex justify-between items-center">
-                        <div class="flex-1">
-                            <span class="text-lg font-semibold text-gray-900 editable" data-field="habilidad">${hab.habilidad}</span>
-                            <span class="ml-3 inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800 font-medium editable" data-field="nivel">${hab.nivel}</span>
-                        </div>
-                        <div class="flex space-x-2">
-                            <button onclick="editHabilidad(${hab.id})" class="text-blue-600 hover:text-blue-800 transition-colors">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button onclick="deleteHabilidad(${hab.id})" class="text-red-600 hover:text-red-800 transition-colors">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function createIdiomaCard(idioma) {
-            return `
-                <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm idioma-card" data-id="${idioma.id}">
-                    <div class="flex justify-between items-center">
-                        <div class="flex-1">
-                            <span class="text-lg font-semibold text-gray-900 editable" data-field="idioma">${idioma.idioma}</span>
-                            <span class="ml-3 inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-100 text-green-800 font-medium editable" data-field="nivel">${idioma.nivel}</span>
-                        </div>
-                        <div class="flex space-x-2">
-                            <button onclick="editIdioma(${idioma.id})" class="text-blue-600 hover:text-blue-800 transition-colors">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button onclick="deleteIdioma(${idioma.id})" class="text-red-600 hover:text-red-800 transition-colors">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function createProyectoCard(proy) {
-            const urlLink = proy.url ? `<a href="${proy.url}" target="_blank" class="text-orange-600 hover:text-orange-800 text-sm">
-                                <i class="fas fa-external-link-alt mr-1"></i>Ver proyecto
-                            </a>` : '';
-            return `
-                <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm proyecto-card" data-id="${proy.id}">
-                    <div class="flex justify-between items-start mb-3">
-                        <div class="flex-1">
-                            <h4 class="text-lg font-semibold text-gray-900 editable" data-field="titulo">${proy.titulo}</h4>
-                            ${urlLink}
-                        </div>
-                        <div class="flex space-x-2">
-                            <button onclick="editProyecto(${proy.id})" class="text-blue-600 hover:text-blue-800 transition-colors">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button onclick="deleteProyecto(${proy.id})" class="text-red-600 hover:text-red-800 transition-colors">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <p class="text-gray-700 editable" data-field="descripcion">${proy.descripcion}</p>
-                    <div class="mt-2">
-                        <span class="editable hidden" data-field="url">${proy.url || ''}</span>
-                    </div>
-                </div>
-            `;
-        }
-
-        function createPublicacionCard(pub) {
-            const urlLink = pub.url ? `<a href="${pub.url}" target="_blank" class="text-pink-600 hover:text-pink-800 text-sm">
-                                <i class="fas fa-external-link-alt mr-1"></i>Leer publicación
-                            </a>` : '';
-            return `
-                <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm publicacion-card" data-id="${pub.id}">
-                    <div class="flex justify-between items-start mb-3">
-                        <div class="flex-1">
-                            <h4 class="text-lg font-semibold text-gray-900 editable" data-field="titulo">${pub.titulo}</h4>
-                            <p class="text-sm text-gray-600">
-                                <i class="fas fa-calendar mr-1"></i>
-                                <span class="editable" data-field="fecha">${pub.fecha}</span>
-                            </p>
-                            ${urlLink}
-                        </div>
-                        <div class="flex space-x-2">
-                            <button onclick="editPublicacion(${pub.id})" class="text-blue-600 hover:text-blue-800 transition-colors">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button onclick="deletePublicacion(${pub.id})" class="text-red-600 hover:text-red-800 transition-colors">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <p class="text-gray-700 editable" data-field="descripcion">${pub.descripcion}</p>
-                    <div class="mt-2">
-                        <span class="editable hidden" data-field="url">${pub.url || ''}</span>
-                    </div>
-                </div>
-            `;
-        }
-
-        function createRedSocialCard(red) {
-            return `
-                <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm red-social-card" data-id="${red.id}">
-                    <div class="flex justify-between items-center">
-                        <div class="flex-1 flex items-center">
-                            <i class="fab fa-${red.plataforma.toLowerCase()} text-2xl mr-3 text-indigo-600"></i>
+                list.innerHTML = data.map(red => `
+                    <div class="bg-slate-700 border border-slate-600 rounded-xl p-4 flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-indigo-600/30 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fab fa-${red.plataforma.toLowerCase()} text-indigo-400 text-lg"></i>
+                            </div>
                             <div>
-                                <span class="text-lg font-semibold text-gray-900 editable" data-field="plataforma">${red.plataforma}</span>
-                                <a href="${red.url}" target="_blank" class="block text-indigo-600 hover:text-indigo-800 text-sm editable" data-field="url">${red.url}</a>
+                                <span class="font-medium text-white">${red.plataforma}</span>
+                                <a href="${red.url}" target="_blank" class="ml-2 text-indigo-400 hover:underline text-sm">Ver perfil</a>
                             </div>
                         </div>
                         <div class="flex space-x-2">
-                            <button onclick="editRedSocial(${red.id})" class="text-blue-600 hover:text-blue-800 transition-colors">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button onclick="deleteRedSocial(${red.id})" class="text-red-600 hover:text-red-800 transition-colors">
-                                <i class="fas fa-trash"></i>
-                            </button>
+                            <button onclick="deleteRedSocial(${red.id})" class="text-red-400 hover:text-red-300"><i class="fas fa-trash"></i></button>
                         </div>
+                    </div>
+                `).join('');
+            } else {
+                container.classList.add('hidden');
+            }
+        }
+
+        function createCard(type, item, title, subtitle, icon, color, url = null) {
+            const colorClasses = {
+                green: 'bg-green-600/30 text-green-400',
+                purple: 'bg-purple-600/30 text-purple-400',
+                yellow: 'bg-yellow-600/30 text-yellow-400',
+                orange: 'bg-orange-600/30 text-orange-400',
+                pink: 'bg-pink-600/30 text-pink-400'
+            };
+            const urlHtml = url ? `<a href="${url}" target="_blank" class="text-${color === 'green' ? 'green' : color === 'purple' ? 'purple' : color === 'yellow' ? 'yellow' : color === 'orange' ? 'orange' : 'pink'}-400 hover:underline text-sm mt-1 block"><i class="fas fa-external-link-alt mr-1"></i>Ver más</a>` : '';
+
+            const deleteFn = {
+                experiencia: 'deleteExperiencia',
+                educacion: 'deleteEducacion',
+                certificado: 'deleteCertificado',
+                proyecto: 'deleteProyecto',
+                publicacion: 'deletePublicacion'
+            }[type];
+
+            return `
+                <div class="bg-slate-700 border border-slate-600 rounded-xl p-4">
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-start">
+                            <div class="w-10 h-10 ${colorClasses[color]} rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas ${icon}"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-white">${title}</h4>
+                                <p class="text-sm text-slate-300">${subtitle}</p>
+                                ${urlHtml}
+                            </div>
+                        </div>
+                        <button onclick="${deleteFn}(${item.id})" class="text-red-400 hover:text-red-300">
+                            <i class="fas fa-trash"></i>
+                        </button>
                     </div>
                 </div>
             `;
         }
 
-        function editExperiencia(id) {
-            const card = document.querySelector(`[data-id="${id}"]`);
-            const editables = card.querySelectorAll('.editable');
-
-            editables.forEach(element => {
-                const field = element.dataset.field;
-                const currentValue = element.textContent.trim();
-
-                if (field === 'fecha_inicio' || field === 'fecha_fin') {
-                    element.innerHTML = `<input type="date" class="border border-gray-300 rounded px-2 py-1 text-sm" value="${currentValue === 'Presente' ? '' : currentValue}">`;
-                } else if (field === 'descripcion') {
-                    element.innerHTML = `<textarea class="border border-gray-300 rounded px-2 py-1 text-sm w-full" rows="3">${currentValue}</textarea>`;
-                } else {
-                    element.innerHTML = `<input type="text" class="border border-gray-300 rounded px-2 py-1 text-sm w-full" value="${currentValue}">`;
-                }
-            });
-
-            // Change edit button to save
-            const editBtn = card.querySelector('.fa-edit').parentElement;
-            editBtn.innerHTML = '<i class="fas fa-save"></i>';
-            editBtn.onclick = () => saveExperiencia(id);
-        }
-
-        async function saveExperiencia(id) {
-            const card = document.querySelector(`[data-id="${id}"]`);
-            const inputs = card.querySelectorAll('input, textarea');
-            const data = {};
-
-            inputs.forEach(input => {
-                const fieldElement = input.closest('.editable');
-                const field = fieldElement.dataset.field;
-                data[field] = input.value;
-            });
-
-            // Handle es_actual checkbox
-            const esActualCheckbox = card.querySelector('input[type="checkbox"]');
-            if (esActualCheckbox) {
-                data.es_actual = esActualCheckbox.checked;
-            }
-
-            try {
-                const response = await fetch(`/api/experiencias/${id}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': 'Bearer ' + token,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
-
-                if (response.ok) {
-                    showNotification('Experiencia actualizada correctamente', 'success');
-                    loadExperiencias(); // Reload experiences
-                } else {
-                    showNotification('Error al actualizar la experiencia', 'error');
-                }
-            } catch (error) {
-                showNotification('Error de conexión', 'error');
-            }
-        }
-
+        // Delete functions
         async function deleteExperiencia(id) {
-            if (!confirm('¿Estás seguro de que quieres eliminar esta experiencia?')) {
-                return;
-            }
-
-            try {
-                const response = await fetch(`/api/experiencias/${id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': 'Bearer ' + token,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (response.ok) {
-                    showNotification('Experiencia eliminada correctamente', 'success');
-                    loadExperiencias(); // Reload experiences
-                } else {
-                    showNotification('Error al eliminar la experiencia', 'error');
-                }
-            } catch (error) {
-                showNotification('Error de conexión', 'error');
-            }
-        }
-
-        // Education functions
-        function editEducacion(id) {
-            const card = document.querySelector(`.educacion-card[data-id="${id}"]`);
-            const editables = card.querySelectorAll('.editable');
-            editables.forEach(element => {
-                const field = element.dataset.field;
-                const currentValue = element.textContent.trim();
-                if (field === 'fecha_inicio' || field === 'fecha_fin') {
-                    element.innerHTML = `<input type="date" class="border border-gray-300 rounded px-2 py-1 text-sm" value="${currentValue === 'Presente' ? '' : currentValue}">`;
-                } else if (field === 'nivel') {
-                    const options = ['Bachillerato', 'Técnico', 'Tecnólogo', 'Pregrado', 'Especialización', 'Maestría', 'Doctorado', 'Postdoctorado'];
-                    element.innerHTML = `<select class="border border-gray-300 rounded px-2 py-1 text-sm">${options.map(opt => `<option value="${opt}" ${opt === currentValue ? 'selected' : ''}>${opt}</option>`).join('')}</select>`;
-                } else {
-                    element.innerHTML = `<input type="text" class="border border-gray-300 rounded px-2 py-1 text-sm w-full" value="${currentValue}">`;
-                }
-            });
-            const editBtn = card.querySelector('.fa-edit').parentElement;
-            editBtn.innerHTML = '<i class="fas fa-save"></i>';
-            editBtn.onclick = () => saveEducacion(id);
-        }
-
-        async function saveEducacion(id) {
-            const card = document.querySelector(`.educacion-card[data-id="${id}"]`);
-            const inputs = card.querySelectorAll('input, select');
-            const data = {};
-            inputs.forEach(input => {
-                const fieldElement = input.closest('.editable');
-                const field = fieldElement.dataset.field;
-                data[field] = input.value;
-            });
-            try {
-                const response = await fetch(`/api/educaciones/${id}`, {
-                    method: 'PUT',
-                    headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-                if (response.ok) {
-                    showNotification('Educación actualizada correctamente', 'success');
-                    loadEducaciones();
-                } else {
-                    showNotification('Error al actualizar la educación', 'error');
-                }
-            } catch (error) {
-                showNotification('Error de conexión', 'error');
-            }
+            if (!confirm('¿Eliminar esta experiencia?')) return;
+            await fetch(`/api/experiencias/${id}`, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } });
+            showNotification('Experiencia eliminada', 'success');
+            loadExperiencias();
+            updateProgress();
         }
 
         async function deleteEducacion(id) {
-            if (!confirm('¿Estás seguro de que quieres eliminar esta educación?')) return;
-            try {
-                const response = await fetch(`/api/educaciones/${id}`, {
-                    method: 'DELETE',
-                    headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }
-                });
-                if (response.ok) {
-                    showNotification('Educación eliminada correctamente', 'success');
-                    loadEducaciones();
-                } else {
-                    showNotification('Error al eliminar la educación', 'error');
-                }
-            } catch (error) {
-                showNotification('Error de conexión', 'error');
-            }
-        }
-
-        // Certifications functions
-        function editCertificado(id) {
-            const card = document.querySelector(`.certificado-card[data-id="${id}"]`);
-            const editables = card.querySelectorAll('.editable');
-            editables.forEach(element => {
-                const field = element.dataset.field;
-                const currentValue = element.textContent.trim();
-                if (field === 'fecha_emision') {
-                    element.innerHTML = `<input type="date" class="border border-gray-300 rounded px-2 py-1 text-sm" value="${currentValue}">`;
-                } else {
-                    element.innerHTML = `<input type="text" class="border border-gray-300 rounded px-2 py-1 text-sm w-full" value="${currentValue}">`;
-                }
-            });
-            const editBtn = card.querySelector('.fa-edit').parentElement;
-            editBtn.innerHTML = '<i class="fas fa-save"></i>';
-            editBtn.onclick = () => saveCertificado(id);
-        }
-
-        async function saveCertificado(id) {
-            const card = document.querySelector(`.certificado-card[data-id="${id}"]`);
-            const inputs = card.querySelectorAll('input');
-            const data = {};
-            inputs.forEach(input => {
-                const fieldElement = input.closest('.editable');
-                const field = fieldElement.dataset.field;
-                data[field] = input.value;
-            });
-            try {
-                const response = await fetch(`/api/certificados/${id}`, {
-                    method: 'PUT',
-                    headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-                if (response.ok) {
-                    showNotification('Certificación actualizada correctamente', 'success');
-                    loadCertificados();
-                } else {
-                    showNotification('Error al actualizar la certificación', 'error');
-                }
-            } catch (error) {
-                showNotification('Error de conexión', 'error');
-            }
+            if (!confirm('¿Eliminar esta educación?')) return;
+            await fetch(`/api/educaciones/${id}`, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } });
+            showNotification('Educación eliminada', 'success');
+            loadEducaciones();
+            updateProgress();
         }
 
         async function deleteCertificado(id) {
-            if (!confirm('¿Estás seguro de que quieres eliminar esta certificación?')) return;
-            try {
-                const response = await fetch(`/api/certificados/${id}`, {
-                    method: 'DELETE',
-                    headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }
-                });
-                if (response.ok) {
-                    showNotification('Certificación eliminada correctamente', 'success');
-                    loadCertificados();
-                } else {
-                    showNotification('Error al eliminar la certificación', 'error');
-                }
-            } catch (error) {
-                showNotification('Error de conexión', 'error');
-            }
-        }
-
-        // Skills functions
-        function editHabilidad(id) {
-            const card = document.querySelector(`.habilidad-card[data-id="${id}"]`);
-            const editables = card.querySelectorAll('.editable');
-            editables.forEach(element => {
-                const field = element.dataset.field;
-                const currentValue = element.textContent.trim();
-                if (field === 'nivel') {
-                    const options = ['Básico', 'Intermedio', 'Avanzado', 'Experto'];
-                    element.innerHTML = `<select class="border border-gray-300 rounded px-2 py-1 text-sm">${options.map(opt => `<option value="${opt}" ${opt === currentValue ? 'selected' : ''}>${opt}</option>`).join('')}</select>`;
-                } else {
-                    element.innerHTML = `<input type="text" class="border border-gray-300 rounded px-2 py-1 text-sm w-full" value="${currentValue}">`;
-                }
-            });
-            const editBtn = card.querySelector('.fa-edit').parentElement;
-            editBtn.innerHTML = '<i class="fas fa-save"></i>';
-            editBtn.onclick = () => saveHabilidad(id);
-        }
-
-        async function saveHabilidad(id) {
-            const card = document.querySelector(`.habilidad-card[data-id="${id}"]`);
-            const inputs = card.querySelectorAll('input, select');
-            const data = {};
-            inputs.forEach(input => {
-                const fieldElement = input.closest('.editable');
-                const field = fieldElement.dataset.field;
-                data[field] = input.value;
-            });
-            try {
-                const response = await fetch(`/api/habilidades/${id}`, {
-                    method: 'PUT',
-                    headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-                if (response.ok) {
-                    showNotification('Habilidad actualizada correctamente', 'success');
-                    loadHabilidades();
-                } else {
-                    showNotification('Error al actualizar la habilidad', 'error');
-                }
-            } catch (error) {
-                showNotification('Error de conexión', 'error');
-            }
+            if (!confirm('¿Eliminar esta certificación?')) return;
+            await fetch(`/api/certificados/${id}`, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } });
+            showNotification('Certificación eliminada', 'success');
+            loadCertificados();
+            updateProgress();
         }
 
         async function deleteHabilidad(id) {
-            if (!confirm('¿Estás seguro de que quieres eliminar esta habilidad?')) return;
-            try {
-                const response = await fetch(`/api/habilidades/${id}`, {
-                    method: 'DELETE',
-                    headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }
-                });
-                if (response.ok) {
-                    showNotification('Habilidad eliminada correctamente', 'success');
-                    loadHabilidades();
-                } else {
-                    showNotification('Error al eliminar la habilidad', 'error');
-                }
-            } catch (error) {
-                showNotification('Error de conexión', 'error');
-            }
-        }
-
-        // Languages functions
-        function editIdioma(id) {
-            const card = document.querySelector(`.idioma-card[data-id="${id}"]`);
-            const editables = card.querySelectorAll('.editable');
-            editables.forEach(element => {
-                const field = element.dataset.field;
-                const currentValue = element.textContent.trim();
-                if (field === 'nivel') {
-                    const options = ['Básico', 'Conversacional', 'Intermedio', 'Avanzado', 'Nativo'];
-                    element.innerHTML = `<select class="border border-gray-300 rounded px-2 py-1 text-sm">${options.map(opt => `<option value="${opt}" ${opt === currentValue ? 'selected' : ''}>${opt}</option>`).join('')}</select>`;
-                } else {
-                    element.innerHTML = `<input type="text" class="border border-gray-300 rounded px-2 py-1 text-sm w-full" value="${currentValue}">`;
-                }
-            });
-            const editBtn = card.querySelector('.fa-edit').parentElement;
-            editBtn.innerHTML = '<i class="fas fa-save"></i>';
-            editBtn.onclick = () => saveIdioma(id);
-        }
-
-        async function saveIdioma(id) {
-            const card = document.querySelector(`.idioma-card[data-id="${id}"]`);
-            const inputs = card.querySelectorAll('input, select');
-            const data = {};
-            inputs.forEach(input => {
-                const fieldElement = input.closest('.editable');
-                const field = fieldElement.dataset.field;
-                data[field] = input.value;
-            });
-            try {
-                const response = await fetch(`/api/idiomas/${id}`, {
-                    method: 'PUT',
-                    headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-                if (response.ok) {
-                    showNotification('Idioma actualizado correctamente', 'success');
-                    loadIdiomas();
-                } else {
-                    showNotification('Error al actualizar el idioma', 'error');
-                }
-            } catch (error) {
-                showNotification('Error de conexión', 'error');
-            }
+            if (!confirm('¿Eliminar esta habilidad?')) return;
+            await fetch(`/api/habilidades/${id}`, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } });
+            showNotification('Habilidad eliminada', 'success');
+            loadHabilidades();
+            updateProgress();
         }
 
         async function deleteIdioma(id) {
-            if (!confirm('¿Estás seguro de que quieres eliminar este idioma?')) return;
-            try {
-                const response = await fetch(`/api/idiomas/${id}`, {
-                    method: 'DELETE',
-                    headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }
-                });
-                if (response.ok) {
-                    showNotification('Idioma eliminado correctamente', 'success');
-                    loadIdiomas();
-                } else {
-                    showNotification('Error al eliminar el idioma', 'error');
-                }
-            } catch (error) {
-                showNotification('Error de conexión', 'error');
-            }
-        }
-
-        // Projects functions
-        function editProyecto(id) {
-            const card = document.querySelector(`.proyecto-card[data-id="${id}"]`);
-            const editables = card.querySelectorAll('.editable');
-            editables.forEach(element => {
-                const field = element.dataset.field;
-                const currentValue = element.textContent.trim();
-                if (field === 'descripcion') {
-                    element.innerHTML = `<textarea class="border border-gray-300 rounded px-2 py-1 text-sm w-full" rows="3">${currentValue}</textarea>`;
-                } else if (field === 'url') {
-                    element.innerHTML = `<input type="url" class="border border-gray-300 rounded px-2 py-1 text-sm w-full" value="${currentValue}">`;
-                } else {
-                    element.innerHTML = `<input type="text" class="border border-gray-300 rounded px-2 py-1 text-sm w-full" value="${currentValue}">`;
-                }
-            });
-            const editBtn = card.querySelector('.fa-edit').parentElement;
-            editBtn.innerHTML = '<i class="fas fa-save"></i>';
-            editBtn.onclick = () => saveProyecto(id);
-        }
-
-        async function saveProyecto(id) {
-            const card = document.querySelector(`.proyecto-card[data-id="${id}"]`);
-            const inputs = card.querySelectorAll('input, textarea');
-            const data = {};
-            inputs.forEach(input => {
-                const fieldElement = input.closest('.editable');
-                const field = fieldElement.dataset.field;
-                data[field] = input.value;
-            });
-            try {
-                const response = await fetch(`/api/proyectos/${id}`, {
-                    method: 'PUT',
-                    headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-                if (response.ok) {
-                    showNotification('Proyecto actualizado correctamente', 'success');
-                    loadProyectos();
-                } else {
-                    showNotification('Error al actualizar el proyecto', 'error');
-                }
-            } catch (error) {
-                showNotification('Error de conexión', 'error');
-            }
+            if (!confirm('¿Eliminar este idioma?')) return;
+            await fetch(`/api/idiomas/${id}`, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } });
+            showNotification('Idioma eliminado', 'success');
+            loadIdiomas();
+            updateProgress();
         }
 
         async function deleteProyecto(id) {
-            if (!confirm('¿Estás seguro de que quieres eliminar este proyecto?')) return;
-            try {
-                const response = await fetch(`/api/proyectos/${id}`, {
-                    method: 'DELETE',
-                    headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }
-                });
-                if (response.ok) {
-                    showNotification('Proyecto eliminado correctamente', 'success');
-                    loadProyectos();
-                } else {
-                    showNotification('Error al eliminar el proyecto', 'error');
-                }
-            } catch (error) {
-                showNotification('Error de conexión', 'error');
-            }
-        }
-
-        // Publications functions
-        function editPublicacion(id) {
-            const card = document.querySelector(`.publicacion-card[data-id="${id}"]`);
-            const editables = card.querySelectorAll('.editable');
-            editables.forEach(element => {
-                const field = element.dataset.field;
-                const currentValue = element.textContent.trim();
-                if (field === 'fecha') {
-                    element.innerHTML = `<input type="date" class="border border-gray-300 rounded px-2 py-1 text-sm" value="${currentValue}">`;
-                } else if (field === 'descripcion') {
-                    element.innerHTML = `<textarea class="border border-gray-300 rounded px-2 py-1 text-sm w-full" rows="3">${currentValue}</textarea>`;
-                } else if (field === 'url') {
-                    element.innerHTML = `<input type="url" class="border border-gray-300 rounded px-2 py-1 text-sm w-full" value="${currentValue}">`;
-                } else {
-                    element.innerHTML = `<input type="text" class="border border-gray-300 rounded px-2 py-1 text-sm w-full" value="${currentValue}">`;
-                }
-            });
-            const editBtn = card.querySelector('.fa-edit').parentElement;
-            editBtn.innerHTML = '<i class="fas fa-save"></i>';
-            editBtn.onclick = () => savePublicacion(id);
-        }
-
-        async function savePublicacion(id) {
-            const card = document.querySelector(`.publicacion-card[data-id="${id}"]`);
-            const inputs = card.querySelectorAll('input, textarea');
-            const data = {};
-            inputs.forEach(input => {
-                const fieldElement = input.closest('.editable');
-                const field = fieldElement.dataset.field;
-                data[field] = input.value;
-            });
-            try {
-                const response = await fetch(`/api/publicaciones/${id}`, {
-                    method: 'PUT',
-                    headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-                if (response.ok) {
-                    showNotification('Publicación actualizada correctamente', 'success');
-                    loadPublicaciones();
-                } else {
-                    showNotification('Error al actualizar la publicación', 'error');
-                }
-            } catch (error) {
-                showNotification('Error de conexión', 'error');
-            }
+            if (!confirm('¿Eliminar este proyecto?')) return;
+            await fetch(`/api/proyectos/${id}`, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } });
+            showNotification('Proyecto eliminado', 'success');
+            loadProyectos();
+            updateProgress();
         }
 
         async function deletePublicacion(id) {
-            if (!confirm('¿Estás seguro de que quieres eliminar esta publicación?')) return;
-            try {
-                const response = await fetch(`/api/publicaciones/${id}`, {
-                    method: 'DELETE',
-                    headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }
-                });
-                if (response.ok) {
-                    showNotification('Publicación eliminada correctamente', 'success');
-                    loadPublicaciones();
-                } else {
-                    showNotification('Error al eliminar la publicación', 'error');
-                }
-            } catch (error) {
-                showNotification('Error de conexión', 'error');
-            }
-        }
-
-        // Social Networks functions
-        function editRedSocial(id) {
-            const card = document.querySelector(`.red-social-card[data-id="${id}"]`);
-            const editables = card.querySelectorAll('.editable');
-            editables.forEach(element => {
-                const field = element.dataset.field;
-                const currentValue = element.textContent.trim();
-                if (field === 'plataforma') {
-                    const options = ['LinkedIn', 'GitHub', 'Twitter', 'Facebook', 'Instagram', 'YouTube', 'Medium', 'Website', 'Otro'];
-                    element.innerHTML = `<select class="border border-gray-300 rounded px-2 py-1 text-sm">${options.map(opt => `<option value="${opt}" ${opt === currentValue ? 'selected' : ''}>${opt}</option>`).join('')}</select>`;
-                } else if (field === 'url') {
-                    element.innerHTML = `<input type="url" class="border border-gray-300 rounded px-2 py-1 text-sm w-full" value="${currentValue}">`;
-                } else {
-                    element.innerHTML = `<input type="text" class="border border-gray-300 rounded px-2 py-1 text-sm w-full" value="${currentValue}">`;
-                }
-            });
-            const editBtn = card.querySelector('.fa-edit').parentElement;
-            editBtn.innerHTML = '<i class="fas fa-save"></i>';
-            editBtn.onclick = () => saveRedSocial(id);
-        }
-
-        async function saveRedSocial(id) {
-            const card = document.querySelector(`.red-social-card[data-id="${id}"]`);
-            const inputs = card.querySelectorAll('input, select');
-            const data = {};
-            inputs.forEach(input => {
-                const fieldElement = input.closest('.editable');
-                const field = fieldElement.dataset.field;
-                data[field] = input.value;
-            });
-            try {
-                const response = await fetch(`/api/redes-sociales/${id}`, {
-                    method: 'PUT',
-                    headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-                if (response.ok) {
-                    showNotification('Red social actualizada correctamente', 'success');
-                    loadRedesSociales();
-                } else {
-                    showNotification('Error al actualizar la red social', 'error');
-                }
-            } catch (error) {
-                showNotification('Error de conexión', 'error');
-            }
+            if (!confirm('¿Eliminar esta publicación?')) return;
+            await fetch(`/api/publicaciones/${id}`, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } });
+            showNotification('Publicación eliminada', 'success');
+            loadPublicaciones();
+            updateProgress();
         }
 
         async function deleteRedSocial(id) {
-            if (!confirm('¿Estás seguro de que quieres eliminar esta red social?')) return;
-            try {
-                const response = await fetch(`/api/redes-sociales/${id}`, {
-                    method: 'DELETE',
-                    headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }
-                });
-                if (response.ok) {
-                    showNotification('Red social eliminada correctamente', 'success');
-                    loadRedesSociales();
-                } else {
-                    showNotification('Error al eliminar la red social', 'error');
-                }
-            } catch (error) {
-                showNotification('Error de conexión', 'error');
-            }
+            if (!confirm('¿Eliminar esta red social?')) return;
+            await fetch(`/api/redes-sociales/${id}`, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } });
+            showNotification('Red social eliminada', 'success');
+            loadRedesSociales();
+            updateProgress();
         }
 
         // Form submissions
         document.getElementById('perfilForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData);
-
-            try {
-                const response = await fetch('/api/perfiles', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': 'Bearer ' + token,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
-
-                if (response.ok) {
-                    showNotification('Perfil guardado correctamente', 'success');
-                    loadUser();
-                } else {
-                    showNotification('Error al guardar el perfil', 'error');
-                }
-            } catch (error) {
-                showNotification('Error de conexión', 'error');
+            const data = Object.fromEntries(new FormData(e.target));
+            const res = await fetch('/api/perfiles', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            if (res.ok) {
+                showNotification('Perfil guardado correctamente', 'success');
+                loadUser();
+            } else {
+                showNotification('Error al guardar', 'error');
             }
         });
 
         document.getElementById('experienciaForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData);
-            data.es_actual = formData.get('es_actual') === 'on';
-
-            try {
-                const response = await fetch('/api/experiencias', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': 'Bearer ' + token,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
-
-                if (response.ok) {
-                    showNotification('Experiencia guardada correctamente', 'success');
-                    e.target.reset();
-                    loadExperiencias(); // Reload experiences list
-                } else {
-                    showNotification('Error al guardar la experiencia', 'error');
-                }
-            } catch (error) {
-                showNotification('Error de conexión', 'error');
+            const data = Object.fromEntries(new FormData(e.target));
+            data.es_actual = e.target.es_actual.checked;
+            const res = await fetch('/api/experiencias', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            if (res.ok) {
+                showNotification('Experiencia guardada', 'success');
+                e.target.reset();
+                loadExperiencias();
+                updateProgress();
             }
         });
 
-        // Education form
         document.getElementById('educacionForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData);
-
-            try {
-                const response = await fetch('/api/educaciones', {
-                    method: 'POST',
-                    headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-
-                if (response.ok) {
-                    showNotification('Educación guardada correctamente', 'success');
-                    e.target.reset();
-                    loadEducaciones();
-                } else {
-                    showNotification('Error al guardar la educación', 'error');
-                }
-            } catch (error) {
-                showNotification('Error de conexión', 'error');
+            const data = Object.fromEntries(new FormData(e.target));
+            const res = await fetch('/api/educaciones', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            if (res.ok) {
+                showNotification('Educación guardada', 'success');
+                e.target.reset();
+                loadEducaciones();
+                updateProgress();
             }
         });
 
-        // Certifications form
         document.getElementById('certificadoForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData);
-
-            try {
-                const response = await fetch('/api/certificados', {
-                    method: 'POST',
-                    headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-
-                if (response.ok) {
-                    showNotification('Certificación guardada correctamente', 'success');
-                    e.target.reset();
-                    loadCertificados();
-                } else {
-                    showNotification('Error al guardar la certificación', 'error');
-                }
-            } catch (error) {
-                showNotification('Error de conexión', 'error');
+            const data = Object.fromEntries(new FormData(e.target));
+            const res = await fetch('/api/certificados', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            if (res.ok) {
+                showNotification('Certificación guardada', 'success');
+                e.target.reset();
+                loadCertificados();
+                updateProgress();
             }
         });
 
-        // Skills form
         document.getElementById('habilidadForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData);
-
-            try {
-                const response = await fetch('/api/habilidades', {
-                    method: 'POST',
-                    headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-
-                if (response.ok) {
-                    showNotification('Habilidad guardada correctamente', 'success');
-                    e.target.reset();
-                    loadHabilidades();
-                } else {
-                    showNotification('Error al guardar la habilidad', 'error');
-                }
-            } catch (error) {
-                showNotification('Error de conexión', 'error');
+            const data = Object.fromEntries(new FormData(e.target));
+            const res = await fetch('/api/habilidades', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            if (res.ok) {
+                showNotification('Habilidad guardada', 'success');
+                e.target.reset();
+                loadHabilidades();
+                updateProgress();
             }
         });
 
-        // Languages form
         document.getElementById('idiomaForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData);
-
-            try {
-                const response = await fetch('/api/idiomas', {
-                    method: 'POST',
-                    headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-
-                if (response.ok) {
-                    showNotification('Idioma guardado correctamente', 'success');
-                    e.target.reset();
-                    loadIdiomas();
-                } else {
-                    showNotification('Error al guardar el idioma', 'error');
-                }
-            } catch (error) {
-                showNotification('Error de conexión', 'error');
+            const data = Object.fromEntries(new FormData(e.target));
+            const res = await fetch('/api/idiomas', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            if (res.ok) {
+                showNotification('Idioma guardado', 'success');
+                e.target.reset();
+                loadIdiomas();
+                updateProgress();
             }
         });
 
-        // Projects form
         document.getElementById('proyectoForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData);
-
-            try {
-                const response = await fetch('/api/proyectos', {
-                    method: 'POST',
-                    headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-
-                if (response.ok) {
-                    showNotification('Proyecto guardado correctamente', 'success');
-                    e.target.reset();
-                    loadProyectos();
-                } else {
-                    showNotification('Error al guardar el proyecto', 'error');
-                }
-            } catch (error) {
-                showNotification('Error de conexión', 'error');
+            const data = Object.fromEntries(new FormData(e.target));
+            const res = await fetch('/api/proyectos', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            if (res.ok) {
+                showNotification('Proyecto guardado', 'success');
+                e.target.reset();
+                loadProyectos();
+                updateProgress();
             }
         });
 
-        // Publications form
         document.getElementById('publicacionForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData);
-
-            try {
-                const response = await fetch('/api/publicaciones', {
-                    method: 'POST',
-                    headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-
-                if (response.ok) {
-                    showNotification('Publicación guardada correctamente', 'success');
-                    e.target.reset();
-                    loadPublicaciones();
-                } else {
-                    showNotification('Error al guardar la publicación', 'error');
-                }
-            } catch (error) {
-                showNotification('Error de conexión', 'error');
+            const data = Object.fromEntries(new FormData(e.target));
+            const res = await fetch('/api/publicaciones', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            if (res.ok) {
+                showNotification('Publicación guardada', 'success');
+                e.target.reset();
+                loadPublicaciones();
+                updateProgress();
             }
         });
 
-        // Social Networks form
         document.getElementById('redSocialForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData);
-
-            try {
-                const response = await fetch('/api/redes-sociales', {
-                    method: 'POST',
-                    headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-
-                if (response.ok) {
-                    showNotification('Red social guardada correctamente', 'success');
-                    e.target.reset();
-                    loadRedesSociales();
-                } else {
-                    showNotification('Error al guardar la red social', 'error');
-                }
-            } catch (error) {
-                showNotification('Error de conexión', 'error');
+            const data = Object.fromEntries(new FormData(e.target));
+            const res = await fetch('/api/redes-sociales', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            if (res.ok) {
+                showNotification('Red social guardada', 'success');
+                e.target.reset();
+                loadRedesSociales();
+                updateProgress();
             }
         });
 
-        // Generate QR function
-        async function generateQr() {
-            try {
-                const response = await fetch('/api/usuarios/regenerate-qr', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': 'Bearer ' + token,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (response.ok) {
-                    showNotification('Código QR generado correctamente', 'success');
-                    loadUser();
-                } else {
-                    showNotification('Error al generar el QR', 'error');
-                }
-            } catch (error) {
-                showNotification('Error de conexión', 'error');
-            }
-        }
-
-        // Notification function
+        // Notification
         function showNotification(message, type = 'info') {
-            const bgColor = type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-blue-500';
-            const notification = document.createElement('div');
-            notification.className = `fixed top-4 right-4 ${bgColor} text-white px-6 py-3 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300`;
-            notification.innerHTML = `
-                <div class="flex items-center">
-                    <i class="fas ${type === 'success' ? 'fa-check' : type === 'error' ? 'fa-exclamation' : 'fa-info'}-circle mr-2"></i>
-                    ${message}
-                </div>
-            `;
-            document.body.appendChild(notification);
-
+            const colors = { success: 'bg-green-500', error: 'bg-red-500', info: 'bg-blue-500' };
+            const icons = { success: 'fa-check', error: 'fa-exclamation', info: 'fa-info' };
+            const notif = document.createElement('div');
+            notif.className = `fixed top-4 right-4 ${colors[type]} text-white px-6 py-3 rounded-xl shadow-lg z-50 transform translate-x-full transition-transform duration-300`;
+            notif.innerHTML = `<i class="fas ${icons[type]} mr-2"></i>${message}`;
+            document.body.appendChild(notif);
+            setTimeout(() => notif.classList.remove('translate-x-full'), 100);
             setTimeout(() => {
-                notification.classList.remove('translate-x-full');
-            }, 100);
-
-            setTimeout(() => {
-                notification.classList.add('translate-x-full');
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 300);
+                notif.classList.add('translate-x-full');
+                setTimeout(() => notif.remove(), 300);
             }, 3000);
         }
 
-        // Load user data when page loads
+        // Init
         loadUser();
-        getFormData();
     </script>
 </body>
 
