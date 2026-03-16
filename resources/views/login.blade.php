@@ -22,7 +22,7 @@
             </div>
             <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded">Login</button>
         </form>
-        <div id="response" class="mt-4"></div>
+
     </div>
 
     <script>
@@ -41,7 +41,7 @@
             });
 
             const data = await response.json();
-            document.getElementById('response').innerText = JSON.stringify(data, null, 2);
+
             if (data.token) {
                 localStorage.setItem('token', data.token);
                 window.location.href = '/dashboard';

@@ -1002,10 +1002,56 @@
         }
 
         // Logout function
-        function logout() {
-            localStorage.removeItem('token');
-            window.location.href = '/login';
+        async function logout() {
+            try {
+                const token = localStorage.getItem('token');
+                await fetch('/api/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                });
+            } catch (error) {
+                console.error('Logout error:', error);
+            } finally {
+                localStorage.removeItem('token');
+                localStorage.removeItem('tokenExpiry');
+                window.location.href = '/login';
+            }
         }
+
+        // Token refresh logic - refresh every hour
+        const TOKEN_REFRESH_INTERVAL = 60 * 60 * 1000; // 1 hour in milliseconds
+
+        async function refreshToken() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/refresh-token', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    localStorage.setItem('token', data.token);
+                    console.log('Token refreshed successfully');
+                } else if (response.status === 401) {
+                    // Token expired or invalid
+                    logout();
+                }
+            } catch (error) {
+                console.error('Token refresh error:', error);
+            }
+        }
+
+        // Start token refresh timer (every hour)
+        setInterval(refreshToken, TOKEN_REFRESH_INTERVAL);
 
         // Load experiences
         async function loadExperiencias() {

@@ -51,6 +51,7 @@ Route::prefix('api')->group(function () {
     Route::post('usuarios', [UsuarioController::class, 'store']); // Public registration
     Route::post('login', [UsuarioController::class, 'login']);
     Route::post('logout', [UsuarioController::class, 'logout'])->middleware('auth:sanctum');
+    Route::post('refresh-token', [UsuarioController::class, 'refreshToken'])->middleware('auth:sanctum');
     Route::post('usuarios/regenerate-qr', [UsuarioController::class, 'regenerateQr'])->middleware('auth:sanctum');
     Route::get('usuarios/me', [UsuarioController::class, 'me'])->middleware('auth:sanctum');
     Route::resource('usuarios', UsuarioController::class)->middleware('auth:sanctum')->except(['store']);

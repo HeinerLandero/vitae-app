@@ -35,7 +35,7 @@ class UsuarioController extends Controller
             'nombre' => 'required',
             'apellido' => 'required',
             'email' => 'required|email|unique:usuarios',
-            'password' => 'required|min:8',
+            'password' => 'required|min:8|confirmed',
             'plantilla_id' => 'required|exists:plantillas,id',
         ]);
 
@@ -119,6 +119,20 @@ class UsuarioController extends Controller
     {
         $request->user()->currentAccessToken()->delete();
         return response()->json(['message' => 'Logged out']);
+    }
+
+    /**
+     * Refresh user token.
+     */
+    public function refreshToken(Request $request)
+    {
+        // Delete current token
+        $request->user()->currentAccessToken()->delete();
+
+        // Create new token
+        $token = $request->user()->createToken('API Token')->plainTextToken;
+
+        return response()->json(['token' => $token]);
     }
 
     /**
