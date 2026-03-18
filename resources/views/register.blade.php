@@ -36,6 +36,7 @@
         <p class="text-center mb-6 text-slate-400">¿Ya tienes cuenta? <a href="/login" class="text-blue-400 hover:text-blue-300">Inicia sesión</a></p>
 
         <form id="registerForm" class="space-y-4">
+            <div id="successMessage" class="hidden p-4 bg-green-900/50 border border-green-600 rounded-xl text-green-300 text-center"></div>
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <label class="block text-slate-300 mb-2"><i class="fas fa-user mr-2 text-blue-400"></i>Nombre</label>
@@ -68,9 +69,9 @@
                     class="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     placeholder="••••••••" required>
             </div>
-            <button type="submit" class="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-green-700 hover:to-emerald-700 transition-all duration-200">
-                <i class="fas fa-user-plus mr-2"></i>
-                Crear Cuenta
+            <button type="submit" id="submitBtn" class="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-green-700 hover:to-emerald-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                <span id="btnText"><i class="fas fa-user-plus mr-2"></i>Crear Cuenta</span>
+                <span id="btnSpinner" class="hidden"><i class="fas fa-spinner fa-spin mr-2"></i>Creando...</span>
             </button>
         </form>
 
@@ -80,36 +81,80 @@
     <script>
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const btnSpinner = document.getElementById('btnSpinner');
+            const successMessage = document.getElementById('successMessage');
+            const responseDiv = document.getElementById('response');
+
             const nombre = document.getElementById('nombre').value;
             const apellido = document.getElementById('apellido').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const password_confirmation = document.getElementById('password_confirmation').value;
 
-            const response = await fetch('/api/usuarios', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({ nombre, apellido, email, password, password_confirmation })
-            });
+            // Disable button and show spinner
+            submitBtn.disabled = true;
+            btnText.classList.add('hidden');
+            btnSpinner.classList.remove('hidden');
+            responseDiv.innerHTML = '';
+            successMessage.classList.add('hidden');
 
-            const data = await response.json();
+            try {
+                const response = await fetch('/api/usuarios', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({ nombre, apellido, email, password, password_confirmation })
+                });
 
-            if (response.ok) {
-                document.getElementById('response').innerHTML = '<span class="text-green-400">¡Cuenta creada exitosamente! Redirigiendo...</span>';
-                setTimeout(() => {
-                    window.location.href = '/login';
-                }, 1500);
-            } else {
-                let errorMsg = 'Error al crear la cuenta';
-                if (data.message) {
-                    errorMsg = data.message;
-                } else if (data.errors) {
-                    errorMsg = Object.values(data.errors).flat().join('<br>');
+                const data = await response.json();
+
+                if (response.ok) {
+                    successMessage.innerHTML = '<i class="fas fa-check-circle mr-2"></i>¡Cuenta creada exitosamente! Serás redirigido al login...';
+                    successMessage.classList.remove('hidden');
+                    document.getElementById('registerForm').reset();
+                    setTimeout(() => {
+                        window.location.href = '/login';
+                    }, 2000);
+                } else {
+                    let errorMsg = 'Error al crear la cuenta';
+                    if (data.message) {
+                        // Check for duplicate email message
+                        if (data.message.includes('email') || data.message.includes('correo')) {
+                            errorMsg = 'El correo electrónico ya está registrado. <a href="/login" class="text-blue-400 hover:underline">¿Ya tienes cuenta?</a>';
+                        } else {
+                            errorMsg = data.message;
+                        }
+                    } else if (data.errors) {
+                        // Check for email already exists error
+                        if (data.errors.email) {
+                            const emailErrors = data.errors.email;
+                            if (Array.isArray(emailErrors)) {
+                                const hasDuplicate = emailErrors.some(e => e.includes('unique') || e.includes('ya') || e.includes('taken'));
+                                if (hasDuplicate) {
+                                    errorMsg = 'El correo electrónico ya está registrado. <a href="/login" class="text-blue-400 hover:underline">¿Ya tienes cuenta?</a>';
+                                } else {
+                                    errorMsg = emailErrors.join('<br>');
+                                }
+                            }
+                        } else {
+                            errorMsg = Object.values(data.errors).flat().join('<br>');
+                        }
+                    }
+                    responseDiv.innerHTML = '<span class="text-red-400">' + errorMsg + '</span>';
                 }
-                document.getElementById('response').innerHTML = '<span class="text-red-400">' + errorMsg + '</span>';
+            } catch (error) {
+                responseDiv.innerHTML = '<span class="text-red-400">Error de conexión. Intenta de nuevo.</span>';
+            } finally {
+                // Re-enable button and hide spinner
+                submitBtn.disabled = false;
+                btnText.classList.remove('hidden');
+                btnSpinner.classList.add('hidden');
             }
         });
     </script>

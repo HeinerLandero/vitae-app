@@ -31,7 +31,7 @@
             <p class="text-slate-400 text-sm">Crea tu CV profesional</p>
         </div>
 
-        <h2 class="text-xl font-semibold text-white mb-2 text-center">Bienvenido de nuevo</h2>
+        <h2 class="text-xl font-semibold text-white mb-2 text-center">Bienvenido</h2>
         <p class="text-center mb-6 text-slate-400">¿No tienes cuenta? <a href="/register" class="text-blue-400 hover:text-blue-300">Regístrate</a></p>
 
         <form id="loginForm" class="space-y-4">

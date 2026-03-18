@@ -36,7 +36,7 @@ class UsuarioController extends Controller
             'apellido' => 'required',
             'email' => 'required|email|unique:usuarios',
             'password' => 'required|min:8|confirmed',
-            'plantilla_id' => 'required|exists:plantillas,id',
+            'plantilla_id' => 'nullable|exists:plantillas,id',
         ]);
 
         $usuario = Usuario::create([
@@ -45,7 +45,7 @@ class UsuarioController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'slug' => Str::slug($request->nombre . '-' . $request->apellido . '-' . Str::random(5)),
-            'plantilla_id' => $request->plantilla_id,
+            'plantilla_id' => $request->plantilla_id ?? 1,
         ]);
 
         // Generate QR code

@@ -22,3 +22,4 @@ class Educacion extends Model
         return $this->belongsTo(Usuario::class);
     }
 }
+
