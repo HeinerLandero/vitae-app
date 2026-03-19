@@ -20,7 +20,6 @@ class Usuario extends Authenticatable
         'email',
         'password',
         'slug',
-        'qr_code',
         'perfil_estado',
         'plantilla_id',
     ];
@@ -87,6 +86,16 @@ class Usuario extends Authenticatable
     public function logs()
     {
         return $this->hasMany(Log::class);
+    }
+
+    /**
+     * Genera el QR code on-demand basado en la URL del CV público
+     */
+    public function getQrCodeAttribute(): string
+    {
+        $url = url('/cv/' . $this->slug);
+        $qrCode = QrCode::format('svg')->size(200)->generate($url);
+        return 'data:image/svg+xml;base64,' . base64_encode($qrCode);
     }
 
 }

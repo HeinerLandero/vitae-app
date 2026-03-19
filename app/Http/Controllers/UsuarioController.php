@@ -6,7 +6,6 @@ use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class UsuarioController extends Controller
 {
@@ -47,11 +46,6 @@ class UsuarioController extends Controller
             'slug' => Str::slug($request->nombre . '-' . $request->apellido . '-' . Str::random(5)),
             'plantilla_id' => $request->plantilla_id ?? 1,
         ]);
-
-        // Generate QR code
-        $url = url('/cv/' . $usuario->slug);
-        $qrCode = QrCode::size(200)->format('svg')->generate($url);
-        $usuario->update(['qr_code' => 'data:image/svg+xml;base64,' . base64_encode($qrCode)]);
 
         return response()->json($usuario, 201);
     }
@@ -143,14 +137,6 @@ class UsuarioController extends Controller
         // Get fresh user from database
         $user = Usuario::find($request->user()->id);
 
-        // Generate QR if not exists
-        if (!$user || !$user->qr_code) {
-            $url = url('/cv/' . $user->slug);
-            $qrCode = QrCode::size(200)->format('svg')->generate($url);
-            $user->update(['qr_code' => 'data:image/svg+xml;base64,' . base64_encode($qrCode)]);
-            $user = $user->fresh(); // Refresh to get updated data
-        }
-
         return response()->json($user);
     }
 
@@ -162,10 +148,7 @@ class UsuarioController extends Controller
         // Get fresh user from database
         $user = Usuario::find($request->user()->id);
 
-        $url = url('/cv/' . $user->slug);
-        $qrCode = QrCode::size(200)->format('svg')->generate($url);
-        $user->update(['qr_code' => 'data:image/svg+xml;base64,' . base64_encode($qrCode)]);
-
-        return response()->json(['message' => 'QR regenerado', 'qr_code' => $user->fresh()->qr_code]);
+        // QR se genera on-demand via accessor
+        return response()->json(['message' => 'QR generado on-demand', 'qr_code' => $user->qr_code]);
     }
 }
