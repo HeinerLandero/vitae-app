@@ -186,6 +186,10 @@
                         <p id="tabSubtitle" class="text-sm text-slate-400">Gestiona tu información personal</p>
                     </div>
                     <div class="flex items-center space-x-4">
+                        <!-- View CV Button -->
+                        <a id="viewCvBtn" href="#" class="p-3 bg-green-600/30 text-green-400 rounded-xl hover:bg-green-600/40 transition-colors" title="Ver mi CV">
+                            <i class="fas fa-eye"></i>
+                        </a>
                         <!-- QR Button -->
                         <button onclick="toggleQRModal()" class="p-3 bg-purple-600/30 text-purple-400 rounded-xl hover:bg-purple-600/40 transition-colors">
                             <i class="fas fa-qrcode"></i>
@@ -203,6 +207,10 @@
 
             <!-- Mobile Floating Buttons -->
             <div class="lg:hidden fixed top-20 right-4 z-40 flex flex-col gap-3">
+                <!-- View CV Floating Button -->
+                <a id="viewCvBtnMobile" href="#" class="p-3 bg-green-600 text-white rounded-xl shadow-lg" title="Ver mi CV">
+                    <i class="fas fa-eye text-xl"></i>
+                </a>
                 <!-- Progress Floating Button -->
                 <button onclick="toggleProgressModal()" class="p-3 bg-slate-800/90 text-white rounded-xl shadow-lg border border-slate-600 backdrop-blur-sm" title="Progreso del CV">
                     <div class="relative">
@@ -1079,6 +1087,11 @@
 
                 // Update user info
                 document.getElementById('userName').textContent = user.nombre + ' ' + user.apellido;
+
+                // Update View CV buttons with user slug
+                const cvUrl = window.location.origin + '/cv/' + user.slug;
+                document.getElementById('viewCvBtn').href = cvUrl;
+                document.getElementById('viewCvBtnMobile').href = cvUrl;
 
                 updateProfileStatus();
                 loadProfileForm(user);
