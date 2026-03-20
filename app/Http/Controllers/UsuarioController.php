@@ -47,7 +47,13 @@ class UsuarioController extends Controller
             'plantilla_id' => $request->plantilla_id ?? 1,
         ]);
 
-        return response()->json($usuario, 201);
+        // Send email verification notification
+        $usuario->sendEmailVerificationNotification();
+
+        return response()->json([
+            'message' => 'Usuario creado. Por favor verifica tu correo electrónico.',
+            'user' => $usuario
+        ], 201);
     }
 
     /**

@@ -47,9 +47,13 @@
                     class="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     placeholder="••••••••" required>
             </div>
-            <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-200">
+            <button type="submit" id="loginBtn" class="w-full justify-center items-center flex bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
                 <i class="fas fa-sign-in-alt mr-2"></i>
-                Iniciar Sesión
+                <span id="loginBtnText">Iniciar Sesión</span>
+                <svg id="loginSpinner" class="animate-spin hidden w-5 h-5 ml-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
             </button>
         </form>
 
@@ -58,25 +62,46 @@
     <script>
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const loginBtnText = document.getElementById('loginBtnText');
+            const loginSpinner = document.getElementById('loginSpinner');
 
-            const response = await fetch('/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
-                },
-                body: JSON.stringify({ email, password })
-            });
+            // Show loading state
+            loginBtn.disabled = true;
+            loginBtnText.textContent = 'Iniciando...';
+            loginSpinner.classList.remove('hidden');
 
-            const data = await response.json();
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                    },
+                    body: JSON.stringify({ email, password })
+                });
 
-            if (data.token) {
-                localStorage.setItem('token', data.token);
-                window.location.href = '/dashboard';
-            } else {
-                alert(data.message || 'Error al iniciar sesión');
+                const data = await response.json();
+
+                if (data.token) {
+                    localStorage.setItem('token', data.token);
+                    window.location.href = '/dashboard';
+                } else {
+                    alert(data.message || 'Error al iniciar sesión');
+                    // Reset button state
+                    loginBtn.disabled = false;
+                    loginBtnText.textContent = 'Iniciar Sesión';
+                    loginSpinner.classList.add('hidden');
+                }
+            } catch (error) {
+                alert('Error al conectar con el servidor');
+                // Reset button state
+                loginBtn.disabled = false;
+                loginBtnText.textContent = 'Iniciar Sesión';
+                loginSpinner.classList.add('hidden');
             }
         });
     </script>

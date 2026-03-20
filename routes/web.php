@@ -3,6 +3,7 @@
 use App\Http\Controllers\ExperiencesController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ProfilesController;
+use App\Http\Controllers\VerificationController;
 use App\Models\Certificado;
 use App\Models\Usuario;
 use App\Models\Perfil;
@@ -34,6 +35,9 @@ Route::get('/cv/{slug}', function ($slug) {
     $usuario = Usuario::where('slug', $slug)->firstOrFail();
     return view('cv.public', compact('usuario'));
 });
+
+// Email verification route
+Route::get('/email/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
 
 // PDF CV download route
 Route::get('/cv/{slug}/pdf', function ($slug) {

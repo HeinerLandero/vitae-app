@@ -5,12 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Notifications\Notifiable;
+use App\Notifications\VerifyEmailNotification;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Str;
 
-class Usuario extends Authenticatable
+class Usuario extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens;
+    use HasApiTokens, Notifiable;
 
     protected $table = 'usuarios';
 
@@ -18,6 +21,7 @@ class Usuario extends Authenticatable
         'nombre',
         'apellido',
         'email',
+        'email_verified_at',
         'password',
         'slug',
         'perfil_estado',
@@ -96,6 +100,14 @@ class Usuario extends Authenticatable
         $url = url('/cv/' . $this->slug);
         $qrCode = QrCode::format('svg')->size(200)->generate($url);
         return 'data:image/svg+xml;base64,' . base64_encode($qrCode);
+    }
+
+    /**
+     * Send the email verification notification using custom notification.
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmailNotification());
     }
 
 }
