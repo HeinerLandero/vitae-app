@@ -140,8 +140,26 @@ class UsuarioController extends Controller
      */
     public function me(Request $request)
     {
-        // Get fresh user from database
-        $user = Usuario::find($request->user()->id);
+        // Get fresh user from database with perfil
+        $user = Usuario::with('perfil')->find($request->user()->id);
+
+        return response()->json($user);
+    }
+
+    /**
+     * Update current user.
+     */
+    public function updateMe(Request $request)
+    {
+        $user = $request->user();
+
+        $validated = $request->validate([
+            'nombre' => 'sometimes|required|string|max:255',
+            'apellido' => 'sometimes|required|string|max:255',
+            'email' => 'sometimes|required|email|unique:usuarios,email,' . $user->id,
+        ]);
+
+        $user->update($validated);
 
         return response()->json($user);
     }

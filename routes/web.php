@@ -58,6 +58,7 @@ Route::prefix('api')->group(function () {
     Route::post('refresh-token', [UsuarioController::class, 'refreshToken'])->middleware('auth:sanctum');
     Route::post('usuarios/regenerate-qr', [UsuarioController::class, 'regenerateQr'])->middleware('auth:sanctum');
     Route::get('usuarios/me', [UsuarioController::class, 'me'])->middleware('auth:sanctum');
+    Route::put('usuarios/me', [UsuarioController::class, 'updateMe'])->middleware('auth:sanctum');
     Route::resource('usuarios', UsuarioController::class)->middleware('auth:sanctum')->except(['store']);
 
     // Simple profile routes using closures

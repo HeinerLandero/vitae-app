@@ -35,16 +35,16 @@
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
+<body class="bg-slate-100 min-h-screen">
     <!-- PDF Download Button -->
-    <button id="downloadPdfBtn" class="fixed top-4 right-4 z-50 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-lg shadow-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 flex items-center space-x-2">
+    <button id="downloadPdfBtn" class="fixed top-4 right-4 z-50 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-700 transition-all duration-300 flex items-center space-x-2">
         <i class="fas fa-download"></i>
         <span class="hidden sm:inline">Descargar PDF</span>
     </button>
 
     <div class="max-w-5xl mx-auto bg-white shadow-2xl">
         <!-- Header Hero Section -->
-        <div class="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 text-white relative overflow-hidden">
+        <div class="bg-slate-800 text-white relative overflow-hidden">
             <div class="absolute inset-0 bg-black bg-opacity-20"></div>
             <div class="relative p-8 md:p-12">
                 <div class="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8">
@@ -87,7 +87,7 @@
         <div class="p-6 md:p-8 space-y-8">
             <!-- Professional Profile -->
             @if($usuario->perfil && $usuario->perfil->descripcion)
-            <section class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 border border-blue-100">
+            <section class="bg-slate-50 rounded-2xl p-6 border border-slate-200">
                 <div class="flex items-center mb-6">
                     <div class="bg-blue-100 p-3 rounded-lg mr-4">
                         <i class="fas fa-user-tie text-blue-600 text-xl"></i>
@@ -104,8 +104,8 @@
             @if($usuario->experiencias->count() > 0)
             <section>
                 <div class="flex items-center mb-6">
-                    <div class="bg-green-100 p-3 rounded-lg mr-4">
-                        <i class="fas fa-briefcase text-green-600 text-xl"></i>
+                    <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                        <i class="fas fa-briefcase text-blue-600 text-xl"></i>
                     </div>
                     <h2 class="text-2xl font-bold text-gray-900">Experiencia Laboral</h2>
                 </div>
@@ -115,21 +115,21 @@
                         <div class="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
                             <div class="flex-1">
                                 <h3 class="text-xl font-bold text-gray-900 mb-1">{{ $exp->cargo }}</h3>
-                                <p class="text-lg text-green-600 font-semibold mb-2">{{ $exp->empresa }}</p>
+                                <p class="text-lg text-blue-600 font-semibold mb-2">{{ $exp->empresa }}</p>
                             </div>
                             <div class="text-right">
                                 <p class="text-sm text-gray-500 mb-1">
                                     <i class="fas fa-calendar mr-1"></i>
                                     {{ \Carbon\Carbon::parse($exp->fecha_inicio)->format('M Y') }} -
                                     @if($exp->es_actual)
-                                        <span class="text-green-600 font-semibold">Presente</span>
+                                        <span class="text-blue-600 font-semibold">Presente</span>
                                     @else
                                         {{ \Carbon\Carbon::parse($exp->fecha_fin)->format('M Y') }}
                                     @endif
                                 </p>
                                 @if($exp->es_actual)
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs bg-green-100 text-green-800 font-medium">
-                                        <i class="fas fa-circle text-green-500 mr-1"></i>
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs bg-blue-100 text-blue-800 font-medium">
+                                        <i class="fas fa-circle text-blue-500 mr-1"></i>
                                         Trabajo Actual
                                     </span>
                                 @endif
@@ -146,8 +146,8 @@
             @if($usuario->educaciones->count() > 0)
             <section>
                 <div class="flex items-center mb-6">
-                    <div class="bg-purple-100 p-3 rounded-lg mr-4">
-                        <i class="fas fa-graduation-cap text-purple-600 text-xl"></i>
+                    <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                        <i class="fas fa-graduation-cap text-blue-600 text-xl"></i>
                     </div>
                     <h2 class="text-2xl font-bold text-gray-900">Educación</h2>
                 </div>
@@ -157,8 +157,8 @@
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between">
                             <div class="flex-1">
                                 <h3 class="text-xl font-bold text-gray-900 mb-1">{{ $edu->titulo }}</h3>
-                                <p class="text-lg text-purple-600 font-semibold mb-2">{{ $edu->institucion }}</p>
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-purple-100 text-purple-800 font-medium">
+                                <p class="text-lg text-blue-600 font-semibold mb-2">{{ $edu->institucion }}</p>
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800 font-medium">
                                     {{ $edu->nivel }}
                                 </span>
                             </div>
@@ -180,8 +180,8 @@
             @if($usuario->proyectos->count() > 0 || $usuario->publicaciones->count() > 0)
             <section>
                 <div class="flex items-center mb-6">
-                    <div class="bg-orange-100 p-3 rounded-lg mr-4">
-                        <i class="fas fa-graduation-cap text-orange-600 text-xl"></i>
+                    <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                        <i class="fas fa-graduation-cap text-blue-600 text-xl"></i>
                     </div>
                     <h2 class="text-2xl font-bold text-gray-900">Formación Complementaria</h2>
                 </div>
@@ -190,7 +190,7 @@
                     @if($usuario->proyectos->count() > 0)
                     <div>
                         <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                            <i class="fas fa-project-diagram text-orange-500 mr-2"></i>
+                            <i class="fas fa-project-diagram text-blue-500 mr-2"></i>
                             Proyectos
                         </h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -199,7 +199,7 @@
                                 <h4 class="text-lg font-bold text-gray-900 mb-2">{{ $proyecto->titulo }}</h4>
                                 <p class="text-gray-700 mb-3 leading-relaxed text-sm">{{ $proyecto->descripcion }}</p>
                                 @if($proyecto->url)
-                                <a href="{{ $proyecto->url }}" target="_blank" class="inline-flex items-center text-orange-600 hover:text-orange-800 font-medium text-sm">
+                                <a href="{{ $proyecto->url }}" target="_blank" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm">
                                     <i class="fas fa-external-link-alt mr-1"></i>
                                     Ver Proyecto
                                 </a>
@@ -214,7 +214,7 @@
                     @if($usuario->publicaciones->count() > 0)
                     <div>
                         <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                            <i class="fas fa-book text-red-500 mr-2"></i>
+                            <i class="fas fa-book text-blue-500 mr-2"></i>
                             Publicaciones
                         </h3>
                         <div class="space-y-3">
@@ -231,7 +231,7 @@
                                             {{ \Carbon\Carbon::parse($pub->fecha)->format('M Y') }}
                                         </p>
                                         @if($pub->url)
-                                        <a href="{{ $pub->url }}" target="_blank" class="inline-flex items-center text-red-600 hover:text-red-800 font-medium text-sm">
+                                        <a href="{{ $pub->url }}" target="_blank" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm">
                                             <i class="fas fa-external-link-alt mr-1"></i>
                                             Leer más
                                         </a>
@@ -259,7 +259,7 @@
                 <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-lg">
                     <div class="flex flex-wrap gap-3">
                         @foreach($usuario->habilidades as $hab)
-                        <span class="skill-badge bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-full font-medium text-sm shadow-md">
+                        <span class="skill-badge bg-blue-600 text-white px-4 py-2 rounded-full font-medium text-sm shadow-md">
                             {{ $hab->habilidad }}
                             <span class="ml-2 text-xs bg-white bg-opacity-20 px-2 py-1 rounded-full">
                                 {{ $hab->nivel }}
@@ -275,8 +275,8 @@
             @if($usuario->idiomas->count() > 0)
             <section>
                 <div class="flex items-center mb-6">
-                    <div class="bg-green-100 p-3 rounded-lg mr-4">
-                        <i class="fas fa-language text-green-600 text-xl"></i>
+                    <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                        <i class="fas fa-language text-blue-600 text-xl"></i>
                     </div>
                     <h2 class="text-2xl font-bold text-gray-900">Idiomas</h2>
                 </div>
@@ -285,7 +285,7 @@
                         @foreach($usuario->idiomas as $idioma)
                         <div class="flex items-center justify-between">
                             <span class="font-semibold text-gray-900">{{ $idioma->idioma }}</span>
-                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
                                 {{ $idioma->nivel }}
                             </span>
                         </div>
@@ -297,7 +297,7 @@
 
             <!-- Social Networks -->
             @if($usuario->redesSociales->count() > 0)
-            <section class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-6">
+            <section class="bg-slate-50 rounded-2xl p-6 border border-slate-200">
                 <div class="flex items-center justify-center mb-6">
                     <div class="bg-gray-200 p-3 rounded-lg mr-4">
                         <i class="fas fa-share-alt text-gray-600 text-xl"></i>
@@ -317,21 +317,7 @@
             </section>
             @endif
 
-            <!-- QR Code -->
-            @if($usuario->qr_code)
-            <section class="text-center bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-8 border border-purple-100">
-                <div class="flex items-center justify-center mb-6">
-                    <div class="bg-purple-100 p-3 rounded-lg mr-4">
-                        <i class="fas fa-qrcode text-purple-600 text-xl"></i>
-                    </div>
-                    <h2 class="text-2xl font-bold text-gray-900">Código QR</h2>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-lg inline-block">
-                    <img src="{{ $usuario->qr_code }}" alt="QR Code" class="w-48 h-48 mx-auto mb-4">
-                    <p class="text-sm text-gray-600">Escanea para acceder a este CV</p>
-                </div>
-            </section>
-            @endif
+
         </div>
 
         <!-- Footer -->

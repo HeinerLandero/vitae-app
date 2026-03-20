@@ -45,7 +45,7 @@
             animation: slideUp 0.3s ease-out;
         }
         .nav-item.active {
-            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            background: linear-gradient(135deg, #475569 0%, #334155 100%);
             color: white;
         }
         .nav-item.active i {
@@ -65,7 +65,7 @@
             left: 0;
             right: 0;
             height: 3px;
-            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #10b981);
+            background: linear-gradient(90deg, #475569, #64748b);
         }
     </style>
 </head>
@@ -82,8 +82,8 @@
             <!-- Logo -->
             <div class="p-6 border-b border-slate-700">
                 <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                        <i class="fas fa-user-circle text-white text-xl"></i>
+                    <div class="w-12 h-12 bg-blue-900/50 rounded-xl flex items-center justify-center shadow-lg">
+                        <i class="fas fa-user-circle text-blue-400 text-xl"></i>
                     </div>
                     <div>
                         <h1 class="text-lg font-bold text-white">Vitae</h1>
@@ -95,64 +95,64 @@
             <!-- Navigation -->
             <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
                 <button onclick="switchTab('perfil')" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-white hover:bg-slate-700 transition-all duration-200" data-tab="perfil">
-                    <div class="w-10 h-10 bg-blue-600/30 rounded-lg flex items-center justify-center">
+                    <div class="w-10 h-10 bg-blue-900/50 rounded-lg flex items-center justify-center">
                         <i class="fas fa-user text-blue-400"></i>
                     </div>
                     <span class="font-medium">Perfil</span>
                 </button>
 
                 <button onclick="switchTab('experiencia')" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-white hover:bg-slate-700 transition-all duration-200" data-tab="experiencia">
-                    <div class="w-10 h-10 bg-green-600/30 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-briefcase text-green-400"></i>
+                    <div class="w-10 h-10 bg-blue-900/50 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-briefcase text-blue-400"></i>
                     </div>
                     <span class="font-medium">Experiencia</span>
                 </button>
 
                 <button onclick="switchTab('educacion')" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-white hover:bg-slate-700 transition-all duration-200" data-tab="educacion">
-                    <div class="w-10 h-10 bg-purple-600/30 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-graduation-cap text-purple-400"></i>
+                    <div class="w-10 h-10 bg-blue-900/50 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-blue-400"></i>
                     </div>
                     <span class="font-medium">Educación</span>
                 </button>
 
                 <button onclick="switchTab('certificaciones')" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-white hover:bg-slate-700 transition-all duration-200" data-tab="certificaciones">
-                    <div class="w-10 h-10 bg-yellow-600/30 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-award text-yellow-400"></i>
+                    <div class="w-10 h-10 bg-blue-900/50 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-award text-blue-400"></i>
                     </div>
                     <span class="font-medium">Certificaciones</span>
                 </button>
 
                 <button onclick="switchTab('habilidades')" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-white hover:bg-slate-700 transition-all duration-200" data-tab="habilidades">
-                    <div class="w-10 h-10 bg-cyan-600/30 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-tools text-cyan-400"></i>
+                    <div class="w-10 h-10 bg-blue-900/50 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tools text-blue-400"></i>
                     </div>
                     <span class="font-medium">Habilidades</span>
                 </button>
 
                 <button onclick="switchTab('idiomas')" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-white hover:bg-slate-700 transition-all duration-200" data-tab="idiomas">
-                    <div class="w-10 h-10 bg-emerald-600/30 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-language text-emerald-400"></i>
+                    <div class="w-10 h-10 bg-blue-900/50 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-language text-blue-400"></i>
                     </div>
                     <span class="font-medium">Idiomas</span>
                 </button>
 
                 <button onclick="switchTab('proyectos')" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-white hover:bg-slate-700 transition-all duration-200" data-tab="proyectos">
-                    <div class="w-10 h-10 bg-orange-600/30 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-project-diagram text-orange-400"></i>
+                    <div class="w-10 h-10 bg-blue-900/50 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-project-diagram text-blue-400"></i>
                     </div>
                     <span class="font-medium">Proyectos</span>
                 </button>
 
                 <button onclick="switchTab('publicaciones')" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-white hover:bg-slate-700 transition-all duration-200" data-tab="publicaciones">
-                    <div class="w-10 h-10 bg-pink-600/30 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-book text-pink-400"></i>
+                    <div class="w-10 h-10 bg-blue-900/50 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-book text-blue-400"></i>
                     </div>
                     <span class="font-medium">Publicaciones</span>
                 </button>
 
                 <button onclick="switchTab('redes')" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-white hover:bg-slate-700 transition-all duration-200" data-tab="redes">
-                    <div class="w-10 h-10 bg-indigo-600/30 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-share-alt text-indigo-400"></i>
+                    <div class="w-10 h-10 bg-blue-900/50 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-share-alt text-blue-400"></i>
                     </div>
                     <span class="font-medium">Redes Sociales</span>
                 </button>
@@ -161,8 +161,8 @@
             <!-- User & Logout -->
             <div class="p-4 border-t border-slate-700">
                 <div id="userInfo" class="flex items-center space-x-3 mb-4">
-                    <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
-                        <i class="fas fa-user"></i>
+                    <div class="w-10 h-10 bg-blue-900/50 rounded-full flex items-center justify-center text-white font-bold">
+                        <i class="fas fa-user text-blue-400"></i>
                     </div>
                     <div class="flex-1 min-w-0">
                         <p id="userName" class="text-sm font-medium text-white truncate">Cargando...</p>
@@ -187,17 +187,17 @@
                     </div>
                     <div class="flex items-center space-x-4">
                         <!-- View CV Button -->
-                        <a id="viewCvBtn" href="#" class="p-3 bg-green-600/30 text-green-400 rounded-xl hover:bg-green-600/40 transition-colors" title="Ver mi CV">
+                        <a id="viewCvBtn" href="#" class="p-3 bg-blue-600/30 text-blue-400 rounded-xl hover:bg-blue-600/40 transition-colors h-12 w-12 flex items-center justify-center" title="Ver mi CV">
                             <i class="fas fa-eye"></i>
                         </a>
                         <!-- QR Button -->
-                        <button onclick="toggleQRModal()" class="p-3 bg-purple-600/30 text-purple-400 rounded-xl hover:bg-purple-600/40 transition-colors">
+                        <button onclick="toggleQRModal()" class="p-3 bg-blue-600/30 text-blue-400 rounded-xl hover:bg-blue-600/40 transition-colors h-12 w-12 flex items-center justify-center">
                             <i class="fas fa-qrcode"></i>
                         </button>
                         <!-- Progress -->
-                        <div class="flex items-center space-x-2 px-4 py-2 bg-slate-700 rounded-xl">
+                        <div class="flex items-center space-x-2 px-4 py-2 bg-slate-700 rounded-xl h-12">
                             <div class="w-16 h-2 bg-slate-600 rounded-full overflow-hidden">
-                                <div id="progressBar" class="h-full bg-gradient-to-r from-blue-600 to-purple-600 rounded-full" style="width: 0%"></div>
+                                <div id="progressBar" class="h-full bg-blue-600 rounded-full" style="width: 0%"></div>
                             </div>
                             <span id="progressText" class="text-sm font-medium text-white">0%</span>
                         </div>
@@ -206,9 +206,9 @@
             </header>
 
             <!-- Mobile Floating Buttons -->
-            <div class="lg:hidden fixed top-20 right-4 z-40 flex flex-col gap-3">
+            <div class="lg:hidden fixed bottom-10 right-4 z-10 flex gap-3">
                 <!-- View CV Floating Button -->
-                <a id="viewCvBtnMobile" href="#" class="p-3 bg-green-600 text-white rounded-xl shadow-lg" title="Ver mi CV">
+                <a id="viewCvBtnMobile" href="#" class="p-3 bg-blue-600 text-white rounded-xl shadow-lg" title="Ver mi CV">
                     <i class="fas fa-eye text-xl"></i>
                 </a>
                 <!-- Progress Floating Button -->
@@ -219,13 +219,13 @@
                     </div>
                 </button>
                 <!-- QR Floating Button -->
-                <button onclick="toggleQRModal()" class="p-3 bg-purple-600 text-white rounded-xl shadow-lg">
+                <button onclick="toggleQRModal()" class="p-3 bg-blue-600 text-white rounded-xl shadow-lg">
                     <i class="fas fa-qrcode text-xl"></i>
                 </button>
             </div>
 
             <!-- Content Area -->
-            <div class="max-w-6xl mx-auto p-4 lg:p-6">
+            <div class="max-w-6xl mx-auto pb-12  lg:pb-4 p-4 lg:p-6">
                 <!-- Perfil Tab -->
                 <div id="tab-perfil" class="tab-content active">
                     <div class="bg-slate-800 rounded-2xl shadow-xl border border-slate-700 overflow-hidden gradient-border">
@@ -361,7 +361,7 @@
                                 </div>
 
                                 <button type="submit"
-                                    class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-6 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transform hover:scale-[1.01] transition-all duration-200 shadow-lg">
+                                    class="w-full bg-blue-600 text-white py-4 px-6 rounded-xl font-semibold hover:bg-blue-700 transform hover:scale-[1.01] transition-all duration-200 shadow-lg">
                                     <i class="fas fa-save mr-2"></i>
                                     Guardar Perfil
                                 </button>
@@ -432,7 +432,7 @@
                                     </div>
 
                                     <button type="submit"
-                                        class="w-full bg-gradient-to-r from-green-600 to-teal-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-green-700 hover:to-teal-700 transition-all duration-200">
+                                        class="w-full bg-blue-600 text-white py-3 px-6 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-200">
                                         <i class="fas fa-plus mr-2"></i>
                                         Agregar Experiencia
                                     </button>
@@ -503,7 +503,7 @@
                                     </div>
 
                                     <button type="submit"
-                                        class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-purple-700 hover:to-indigo-700 transition-all duration-200">
+                                        class="w-full bg-blue-600 text-white py-3 px-6 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-200">
                                         <i class="fas fa-plus mr-2"></i>
                                         Agregar Educación
                                     </button>
@@ -553,7 +553,7 @@
                                     </div>
 
                                     <button type="submit"
-                                        class="w-full bg-gradient-to-r from-yellow-600 to-orange-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-yellow-700 hover:to-orange-700 transition-all duration-200">
+                                        class="w-full bg-blue-600 text-white py-3 px-6 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-200">
                                         <i class="fas fa-plus mr-2"></i>
                                         Agregar Certificación
                                     </button>
@@ -602,7 +602,7 @@
                                     </div>
 
                                     <button type="submit"
-                                        class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-cyan-700 hover:to-blue-700 transition-all duration-200">
+                                        class="w-full bg-blue-600 text-white py-3 px-6 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-200">
                                         <i class="fas fa-plus mr-2"></i>
                                         Agregar Habilidad
                                     </button>
@@ -652,7 +652,7 @@
                                     </div>
 
                                     <button type="submit"
-                                        class="w-full bg-gradient-to-r from-emerald-600 to-green-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-emerald-700 hover:to-green-700 transition-all duration-200">
+                                        class="w-full bg-blue-600 text-white py-3 px-6 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-200">
                                         <i class="fas fa-plus mr-2"></i>
                                         Agregar Idioma
                                     </button>
@@ -702,7 +702,7 @@
                                     </div>
 
                                     <button type="submit"
-                                        class="w-full bg-gradient-to-r from-orange-600 to-red-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-orange-700 hover:to-red-700 transition-all duration-200">
+                                        class="w-full bg-blue-600 text-white py-3 px-6 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-200">
                                         <i class="fas fa-plus mr-2"></i>
                                         Agregar Proyecto
                                     </button>
@@ -759,7 +759,7 @@
                                     </div>
 
                                     <button type="submit"
-                                        class="w-full bg-gradient-to-r from-pink-600 to-rose-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-pink-700 hover:to-rose-700 transition-all duration-200">
+                                        class="w-full bg-blue-600 text-white py-3 px-6 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-200">
                                         <i class="fas fa-plus mr-2"></i>
                                         Agregar Publicación
                                     </button>
@@ -812,7 +812,7 @@
                                     </div>
 
                                     <button type="submit"
-                                        class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-200">
+                                        class="w-full bg-blue-600 text-white py-3 px-6 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-200">
                                         <i class="fas fa-plus mr-2"></i>
                                         Agregar Red Social
                                     </button>
@@ -828,7 +828,7 @@
     <!-- QR Modal -->
     <div id="qrModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center">
         <div class="bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full mx-4 overflow-hidden border border-slate-700">
-            <div class="bg-gradient-to-r from-purple-600 to-pink-600 p-6">
+            <div class="bg-blue-900/50 p-6">
                 <div class="flex justify-between items-center">
                     <h3 class="text-xl font-bold text-white">Tu Código QR</h3>
                     <button onclick="toggleQRModal()" class="text-white/80 hover:text-white">
@@ -839,14 +839,14 @@
             <div class="p-6">
                 <div id="qrContainer" class="text-center">
                     <div class="flex items-center justify-center py-8">
-                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-400"></div>
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400"></div>
                     </div>
                 </div>
                 <div id="cvUrlContainer" class="mt-4 hidden">
                     <p class="text-sm text-slate-300 mb-2">URL de tu CV:</p>
                     <div class="flex items-center bg-slate-700 rounded-lg p-3">
                         <span id="cvUrl" class="text-sm text-white truncate flex-1"></span>
-                        <button onclick="copyCVUrl()" class="ml-2 text-purple-400 hover:text-purple-300">
+                        <button onclick="copyCVUrl()" class="ml-2 text-blue-400 hover:text-blue-300">
                             <i class="fas fa-copy"></i>
                         </button>
                     </div>
@@ -947,7 +947,7 @@
             const progressDetails = `
                 <div id="progressModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center">
                     <div class="bg-slate-800 rounded-2xl shadow-2xl max-w-sm w-full mx-4 overflow-hidden border border-slate-700">
-                        <div class="bg-gradient-to-r from-blue-600 to-purple-600 p-4">
+                        <div class="bg-blue-900/50 p-4">
                             <div class="flex justify-between items-center">
                                 <h3 class="text-lg font-bold text-white">Progreso del CV</h3>
                                 <button onclick="toggleProgressModal()" class="text-white/80 hover:text-white">
@@ -1140,8 +1140,24 @@
 
         function loadProfileForm(user) {
             document.getElementById('perfilForm').classList.remove('hidden');
+            const form = document.getElementById('perfilForm');
+
+            // Populate usuario fields (nombre, apellido, email)
+            if (user.nombre) {
+                const nombreInput = form.querySelector('[name="nombre"]');
+                if (nombreInput) nombreInput.value = user.nombre;
+            }
+            if (user.apellido) {
+                const apellidoInput = form.querySelector('[name="apellido"]');
+                if (apellidoInput) apellidoInput.value = user.apellido;
+            }
+            if (user.email) {
+                const emailInput = form.querySelector('[name="email"]');
+                if (emailInput) emailInput.value = user.email;
+            }
+
+            // Populate perfil fields
             if (user.perfil) {
-                const form = document.getElementById('perfilForm');
                 Object.keys(user.perfil).forEach(key => {
                     const input = form.querySelector(`[name="${key}"]`);
                     if (input) input.value = user.perfil[key];
@@ -1529,13 +1545,43 @@
         // Form submissions
         document.getElementById('perfilForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const data = Object.fromEntries(new FormData(e.target));
-            const res = await fetch('/api/perfiles', {
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+
+            // Separate usuario fields from perfil fields
+            const usuarioData = {
+                nombre: data.nombre,
+                apellido: data.apellido,
+                email: data.email
+            };
+            const perfilData = {
+                cargo: data.cargo,
+                telefono: data.telefono,
+                fecha_nacimiento: data.fecha_nacimiento,
+                nacionalidad: data.nacionalidad,
+                direccion: data.direccion,
+                ciudad: data.ciudad,
+                pais: data.pais,
+                tipo_documento: data.tipo_documento,
+                numero_documento: data.numero_documento,
+                descripcion: data.descripcion
+            };
+
+            // Save usuario data first
+            const usuarioRes = await fetch('/api/usuarios/me', {
+                method: 'PUT',
+                headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+                body: JSON.stringify(usuarioData)
+            });
+
+            // Then save perfil data
+            const perfilRes = await fetch('/api/perfiles', {
                 method: 'POST',
                 headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                body: JSON.stringify(perfilData)
             });
-            if (res.ok) {
+
+            if (perfilRes.ok) {
                 showNotification('Perfil guardado correctamente', 'success');
                 loadUser();
             } else {
