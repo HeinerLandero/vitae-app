@@ -4,7 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="CV de {{ $usuario->nombre }} {{ $usuario->apellido }} - Curriculum Vitae Profesional">
+    <meta property="og:title" content="{{ $usuario->nombre }} {{ $usuario->apellido }} - Curriculum Vitae">
+    <meta property="og:description" content="CV profesional de {{ $usuario->nombre }} {{ $usuario->apellido }}{{ $usuario->perfil && $usuario->perfil->cargo ? ' - ' . $usuario->perfil->cargo : '' }}">
+    <meta property="og:type" content="profile">
+    <link rel="canonical" href="{{ url('/cv/' . $usuario->slug) }}">
     <title>{{ $usuario->nombre }} {{ $usuario->apellido }} - Curriculum Vitae</title>
+    @if($usuario->perfil)
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "{{ $usuario->nombre }} {{ $usuario->apellido }}",
+        "jobTitle": "{{ $usuario->perfil->cargo ?? '' }}",
+        "email": "{{ $usuario->email }}",
+        "telephone": "{{ $usuario->perfil->telefono ?? '' }}",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "{{ $usuario->perfil->ciudad ?? '' }}",
+            "addressCountry": "{{ $usuario->perfil->pais ?? '' }}"
+        },
+        "url": "{{ url('/cv/' . $usuario->slug) }}"
+    }
+    </script>
+    @endif
     <script src="https://cdn.tailwindcss.com/3.3.0"></script>
     <script>
         tailwind.config = {

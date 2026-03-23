@@ -3,8 +3,16 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Crea tu currículum vitae profesional online con Vitae App. Genera CVs PDF optimizados para recruiters y destaca en tu búsqueda de empleo.">
+        <meta name="keywords" content="curriculum vitae, CV, crear CV, generador de CV, vitae app, currículum profesional, CV online">
+        <meta name="author" content="Vitae App">
+        <meta property="og:title" content="Vitae App - Crea tu Currículum Profesional">
+        <meta property="og:description" content="Crea tu currículum vitae profesional online. Genera CVs PDF optimizados para recruiters.">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="{{ config('app.url', request()->url()) }}">
+        <link rel="canonical" href="{{ config('app.url', request()->url()) }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>Vitae App - Crea tu Currículum Vitae Profesional Online</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
