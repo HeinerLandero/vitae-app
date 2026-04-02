@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="CV de {{ $usuario->nombre }} {{ $usuario->apellido }} - Curriculum Vitae Profesional">
-    <meta property="og:title" content="{{ $usuario->nombre }} {{ $usuario->apellido }} - Curriculum Vitae">
-    <meta property="og:description" content="CV profesional de {{ $usuario->nombre }} {{ $usuario->apellido }}{{ $usuario->perfil && $usuario->perfil->cargo ? ' - ' . $usuario->perfil->cargo : '' }}">
+    <meta name="description" content="CV de <?php echo e($usuario->nombre); ?> <?php echo e($usuario->apellido); ?> - Curriculum Vitae Profesional">
+    <meta property="og:title" content="<?php echo e($usuario->nombre); ?> <?php echo e($usuario->apellido); ?> - Curriculum Vitae">
+    <meta property="og:description" content="CV profesional de <?php echo e($usuario->nombre); ?> <?php echo e($usuario->apellido); ?><?php echo e($usuario->perfil && $usuario->perfil->cargo ? ' - ' . $usuario->perfil->cargo : ''); ?>">
     <meta property="og:type" content="profile">
-    <link rel="canonical" href="{{ url('/cv/' . $usuario->slug) }}">
-    <title>{{ $usuario->nombre }} {{ $usuario->apellido }} - Curriculum Vitae</title>
-    @if($usuario->perfil)
-    @verbatim
+    <link rel="canonical" href="<?php echo e(url('/cv/' . $usuario->slug)); ?>">
+    <title><?php echo e($usuario->nombre); ?> <?php echo e($usuario->apellido); ?> - Curriculum Vitae</title>
+    <?php if($usuario->perfil): ?>
+    
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -27,8 +27,8 @@
         "url": "{{ url('/cv/' . $usuario->slug) }}"
     }
     </script>
-    @endverbatim
-    @endif
+    
+    <?php endif; ?>
     <script src="https://cdn.tailwindcss.com/3.3.0"></script>
     <script>
         tailwind.config = {
@@ -81,27 +81,30 @@
 
                     <!-- Name and Title -->
                     <div class="text-center md:text-left flex-1">
-                        <h1 class="text-4xl md:text-5xl font-bold mb-2">{{ $usuario->nombre }} {{ $usuario->apellido }}</h1>
-                        @if($usuario->perfil && $usuario->perfil->cargo)
-                            <p class="text-xl md:text-2xl text-blue-100 mb-4">{{ $usuario->perfil->cargo }}</p>
-                        @endif
+                        <h1 class="text-4xl md:text-5xl font-bold mb-2"><?php echo e($usuario->nombre); ?> <?php echo e($usuario->apellido); ?></h1>
+                        <?php if($usuario->perfil && $usuario->perfil->cargo): ?>
+                            <p class="text-xl md:text-2xl text-blue-100 mb-4"><?php echo e($usuario->perfil->cargo); ?></p>
+                        <?php endif; ?>
 
                         <!-- Contact Info -->
                         <div class="flex flex-wrap justify-center md:justify-start gap-4 text-sm">
-                            @if($usuario->perfil)
+                            <?php if($usuario->perfil): ?>
                                 <div class="flex items-center">
                                     <i class="fas fa-phone mr-2"></i>
-                                    {{ $usuario->perfil->telefono }}
+                                    <?php echo e($usuario->perfil->telefono); ?>
+
                                 </div>
                                 <div class="flex items-center">
                                     <i class="fas fa-envelope mr-2"></i>
-                                    {{ $usuario->email }}
+                                    <?php echo e($usuario->email); ?>
+
                                 </div>
                                 <div class="flex items-center">
                                     <i class="fas fa-map-marker-alt mr-2"></i>
-                                    {{ $usuario->perfil->ciudad }}, {{ $usuario->perfil->pais }}
+                                    <?php echo e($usuario->perfil->ciudad); ?>, <?php echo e($usuario->perfil->pais); ?>
+
                                 </div>
-                            @endif
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -110,7 +113,7 @@
 
         <div class="p-6 md:p-8 space-y-8">
             <!-- Professional Profile -->
-            @if($usuario->perfil && $usuario->perfil->descripcion)
+            <?php if($usuario->perfil && $usuario->perfil->descripcion): ?>
             <section class="bg-slate-50 rounded-2xl p-6 border border-slate-200">
                 <div class="flex items-center mb-6">
                     <div class="bg-blue-100 p-3 rounded-lg mr-4">
@@ -119,13 +122,13 @@
                     <h2 class="text-2xl font-bold text-gray-900">Perfil Profesional</h2>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-sm">
-                    <p class="text-gray-700 leading-relaxed text-lg">{{ $usuario->perfil->descripcion }}</p>
+                    <p class="text-gray-700 leading-relaxed text-lg"><?php echo e($usuario->perfil->descripcion); ?></p>
                 </div>
             </section>
-            @endif
+            <?php endif; ?>
 
             <!-- Work Experience -->
-            @if($usuario->experiencias->count() > 0)
+            <?php if($usuario->experiencias->count() > 0): ?>
             <section>
                 <div class="flex items-center mb-6">
                     <div class="bg-blue-100 p-3 rounded-lg mr-4">
@@ -134,40 +137,41 @@
                     <h2 class="text-2xl font-bold text-gray-900">Experiencia Laboral</h2>
                 </div>
                 <div class="space-y-6">
-                    @foreach($usuario->experiencias->sortByDesc('fecha_inicio') as $exp)
+                    <?php $__currentLoopData = $usuario->experiencias->sortByDesc('fecha_inicio'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $exp): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
                         <div class="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
                             <div class="flex-1">
-                                <h3 class="text-xl font-bold text-gray-900 mb-1">{{ $exp->cargo }}</h3>
-                                <p class="text-lg text-blue-600 font-semibold mb-2">{{ $exp->empresa }}</p>
+                                <h3 class="text-xl font-bold text-gray-900 mb-1"><?php echo e($exp->cargo); ?></h3>
+                                <p class="text-lg text-blue-600 font-semibold mb-2"><?php echo e($exp->empresa); ?></p>
                             </div>
                             <div class="text-right">
                                 <p class="text-sm text-gray-500 mb-1">
                                     <i class="fas fa-calendar mr-1"></i>
-                                    {{ \Carbon\Carbon::parse($exp->fecha_inicio)->format('M Y') }} -
-                                    @if($exp->es_actual)
+                                    <?php echo e(\Carbon\Carbon::parse($exp->fecha_inicio)->format('M Y')); ?> -
+                                    <?php if($exp->es_actual): ?>
                                         <span class="text-blue-600 font-semibold">Presente</span>
-                                    @else
-                                        {{ \Carbon\Carbon::parse($exp->fecha_fin)->format('M Y') }}
-                                    @endif
+                                    <?php else: ?>
+                                        <?php echo e(\Carbon\Carbon::parse($exp->fecha_fin)->format('M Y')); ?>
+
+                                    <?php endif; ?>
                                 </p>
-                                @if($exp->es_actual)
+                                <?php if($exp->es_actual): ?>
                                     <span class="inline-flex items-center px-3 py-1 rounded-full text-xs bg-blue-100 text-blue-800 font-medium">
                                         <i class="fas fa-circle text-blue-500 mr-1"></i>
                                         Trabajo Actual
                                     </span>
-                                @endif
+                                <?php endif; ?>
                             </div>
                         </div>
-                        <p class="text-gray-700 leading-relaxed">{{ $exp->descripcion }}</p>
+                        <p class="text-gray-700 leading-relaxed"><?php echo e($exp->descripcion); ?></p>
                     </div>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
             </section>
-            @endif
+            <?php endif; ?>
 
             <!-- Education -->
-            @if($usuario->educaciones->count() > 0)
+            <?php if($usuario->educaciones->count() > 0): ?>
             <section>
                 <div class="flex items-center mb-6">
                     <div class="bg-blue-100 p-3 rounded-lg mr-4">
@@ -176,32 +180,34 @@
                     <h2 class="text-2xl font-bold text-gray-900">Educación</h2>
                 </div>
                 <div class="space-y-4">
-                    @foreach($usuario->educaciones->sortByDesc('fecha_inicio') as $edu)
+                    <?php $__currentLoopData = $usuario->educaciones->sortByDesc('fecha_inicio'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $edu): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between">
                             <div class="flex-1">
-                                <h3 class="text-xl font-bold text-gray-900 mb-1">{{ $edu->titulo }}</h3>
-                                <p class="text-lg text-blue-600 font-semibold mb-2">{{ $edu->institucion }}</p>
+                                <h3 class="text-xl font-bold text-gray-900 mb-1"><?php echo e($edu->titulo); ?></h3>
+                                <p class="text-lg text-blue-600 font-semibold mb-2"><?php echo e($edu->institucion); ?></p>
                                 <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800 font-medium">
-                                    {{ $edu->nivel }}
+                                    <?php echo e($edu->nivel); ?>
+
                                 </span>
                             </div>
                             <div class="text-right mt-4 md:mt-0">
                                 <p class="text-sm text-gray-500">
                                     <i class="fas fa-calendar mr-1"></i>
-                                    {{ \Carbon\Carbon::parse($edu->fecha_inicio)->format('M Y') }} -
-                                    {{ \Carbon\Carbon::parse($edu->fecha_fin)->format('M Y') }}
+                                    <?php echo e(\Carbon\Carbon::parse($edu->fecha_inicio)->format('M Y')); ?> -
+                                    <?php echo e(\Carbon\Carbon::parse($edu->fecha_fin)->format('M Y')); ?>
+
                                 </p>
                             </div>
                         </div>
                     </div>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
             </section>
-            @endif
+            <?php endif; ?>
 
             <!-- Certifications -->
-            @if($usuario->certificados->count() > 0)
+            <?php if($usuario->certificados->count() > 0): ?>
             <section>
                 <div class="flex items-center mb-6">
                     <div class="bg-blue-100 p-3 rounded-lg mr-4">
@@ -210,28 +216,29 @@
                     <h2 class="text-2xl font-bold text-gray-900">Certificaciones</h2>
                 </div>
                 <div class="space-y-4">
-                    @foreach($usuario->certificados as $cert)
+                    <?php $__currentLoopData = $usuario->certificados; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cert): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between">
                             <div class="flex-1">
-                                <h3 class="text-xl font-bold text-gray-900 mb-1">{{ $cert->nombre }}</h3>
-                                <p class="text-lg text-blue-600 font-semibold mb-2">{{ $cert->entidad }}</p>
+                                <h3 class="text-xl font-bold text-gray-900 mb-1"><?php echo e($cert->nombre); ?></h3>
+                                <p class="text-lg text-blue-600 font-semibold mb-2"><?php echo e($cert->entidad); ?></p>
                             </div>
                             <div class="text-right mt-4 md:mt-0">
                                 <p class="text-sm text-gray-500">
                                     <i class="fas fa-calendar mr-1"></i>
-                                    {{ \Carbon\Carbon::parse($cert->fecha_expedicion)->format('M Y') }}
+                                    <?php echo e(\Carbon\Carbon::parse($cert->fecha_expedicion)->format('M Y')); ?>
+
                                 </p>
                             </div>
                         </div>
                     </div>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
             </section>
-            @endif
+            <?php endif; ?>
 
             <!-- Complementary Training -->
-            @if($usuario->proyectos->count() > 0 || $usuario->publicaciones->count() > 0)
+            <?php if($usuario->proyectos->count() > 0 || $usuario->publicaciones->count() > 0): ?>
             <section>
                 <div class="flex items-center mb-6">
                     <div class="bg-blue-100 p-3 rounded-lg mr-4">
@@ -241,68 +248,69 @@
                 </div>
                 <div class="space-y-6">
                     <!-- Projects -->
-                    @if($usuario->proyectos->count() > 0)
+                    <?php if($usuario->proyectos->count() > 0): ?>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
                             <i class="fas fa-project-diagram text-blue-500 mr-2"></i>
                             Proyectos
                         </h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            @foreach($usuario->proyectos as $proyecto)
+                            <?php $__currentLoopData = $usuario->proyectos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $proyecto): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300">
-                                <h4 class="text-lg font-bold text-gray-900 mb-2">{{ $proyecto->titulo }}</h4>
-                                <p class="text-gray-700 mb-3 leading-relaxed text-sm">{{ $proyecto->descripcion }}</p>
-                                @if($proyecto->url)
-                                <a href="{{ $proyecto->url }}" target="_blank" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm">
+                                <h4 class="text-lg font-bold text-gray-900 mb-2"><?php echo e($proyecto->titulo); ?></h4>
+                                <p class="text-gray-700 mb-3 leading-relaxed text-sm"><?php echo e($proyecto->descripcion); ?></p>
+                                <?php if($proyecto->url): ?>
+                                <a href="<?php echo e($proyecto->url); ?>" target="_blank" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm">
                                     <i class="fas fa-external-link-alt mr-1"></i>
                                     Ver Proyecto
                                 </a>
-                                @endif
+                                <?php endif; ?>
                             </div>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </div>
                     </div>
-                    @endif
+                    <?php endif; ?>
 
                     <!-- Publications -->
-                    @if($usuario->publicaciones->count() > 0)
+                    <?php if($usuario->publicaciones->count() > 0): ?>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
                             <i class="fas fa-book text-blue-500 mr-2"></i>
                             Publicaciones
                         </h3>
                         <div class="space-y-3">
-                            @foreach($usuario->publicaciones->sortByDesc('fecha') as $pub)
+                            <?php $__currentLoopData = $usuario->publicaciones->sortByDesc('fecha'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $pub): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300">
                                 <div class="flex flex-col md:flex-row md:items-start md:justify-between">
                                     <div class="flex-1">
-                                        <h4 class="text-lg font-bold text-gray-900 mb-1">{{ $pub->titulo }}</h4>
-                                        <p class="text-gray-700 leading-relaxed text-sm">{{ $pub->descripcion }}</p>
+                                        <h4 class="text-lg font-bold text-gray-900 mb-1"><?php echo e($pub->titulo); ?></h4>
+                                        <p class="text-gray-700 leading-relaxed text-sm"><?php echo e($pub->descripcion); ?></p>
                                     </div>
                                     <div class="text-right mt-3 md:mt-0 md:ml-4">
                                         <p class="text-xs text-gray-500 mb-1">
                                             <i class="fas fa-calendar mr-1"></i>
-                                            {{ \Carbon\Carbon::parse($pub->fecha)->format('M Y') }}
+                                            <?php echo e(\Carbon\Carbon::parse($pub->fecha)->format('M Y')); ?>
+
                                         </p>
-                                        @if($pub->url)
-                                        <a href="{{ $pub->url }}" target="_blank" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm">
+                                        <?php if($pub->url): ?>
+                                        <a href="<?php echo e($pub->url); ?>" target="_blank" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium text-sm">
                                             <i class="fas fa-external-link-alt mr-1"></i>
                                             Leer más
                                         </a>
-                                        @endif
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </div>
                     </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </section>
-            @endif
+            <?php endif; ?>
 
             <!-- Skills -->
-            @if($usuario->habilidades->count() > 0)
+            <?php if($usuario->habilidades->count() > 0): ?>
             <section>
                 <div class="flex items-center mb-6">
                     <div class="bg-blue-100 p-3 rounded-lg mr-4">
@@ -312,21 +320,23 @@
                 </div>
                 <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-lg">
                     <div class="flex flex-wrap gap-3">
-                        @foreach($usuario->habilidades as $hab)
+                        <?php $__currentLoopData = $usuario->habilidades; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $hab): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <span class="skill-badge bg-blue-600 text-white px-4 py-2 rounded-full font-medium text-sm shadow-md">
-                            {{ $hab->habilidad }}
+                            <?php echo e($hab->habilidad); ?>
+
                             <span class="ml-2 text-xs bg-white bg-opacity-20 px-2 py-1 rounded-full">
-                                {{ $hab->nivel }}
+                                <?php echo e($hab->nivel); ?>
+
                             </span>
                         </span>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
                 </div>
             </section>
-            @endif
+            <?php endif; ?>
 
             <!-- Languages -->
-            @if($usuario->idiomas->count() > 0)
+            <?php if($usuario->idiomas->count() > 0): ?>
             <section>
                 <div class="flex items-center mb-6">
                     <div class="bg-blue-100 p-3 rounded-lg mr-4">
@@ -336,21 +346,22 @@
                 </div>
                 <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-lg">
                     <div class="space-y-4">
-                        @foreach($usuario->idiomas as $idioma)
+                        <?php $__currentLoopData = $usuario->idiomas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $idioma): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="flex items-center justify-between">
-                            <span class="font-semibold text-gray-900">{{ $idioma->idioma }}</span>
+                            <span class="font-semibold text-gray-900"><?php echo e($idioma->idioma); ?></span>
                             <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
-                                {{ $idioma->nivel }}
+                                <?php echo e($idioma->nivel); ?>
+
                             </span>
                         </div>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
                 </div>
             </section>
-            @endif
+            <?php endif; ?>
 
             <!-- Social Networks -->
-            @if($usuario->redesSociales->count() > 0)
+            <?php if($usuario->redesSociales->count() > 0): ?>
             <section class="bg-slate-50 rounded-2xl p-6 border border-slate-200">
                 <div class="flex items-center justify-center mb-6">
                     <div class="bg-gray-200 p-3 rounded-lg mr-4">
@@ -359,17 +370,17 @@
                     <h2 class="text-2xl font-bold text-gray-900">Redes Sociales</h2>
                 </div>
                 <div class="flex flex-wrap justify-center gap-4">
-                    @foreach($usuario->redesSociales as $red)
-                    <a href="{{ $red->url }}" target="_blank" class="bg-white border border-gray-200 rounded-lg p-4 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                    <?php $__currentLoopData = $usuario->redesSociales; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $red): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <a href="<?php echo e($red->url); ?>" target="_blank" class="bg-white border border-gray-200 rounded-lg p-4 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                         <div class="flex items-center">
-                            <i class="fab fa-{{ strtolower($red->plataforma) }} text-2xl mr-3 text-blue-600"></i>
-                            <span class="font-medium text-gray-900">{{ $red->plataforma }}</span>
+                            <i class="fab fa-<?php echo e(strtolower($red->plataforma)); ?> text-2xl mr-3 text-blue-600"></i>
+                            <span class="font-medium text-gray-900"><?php echo e($red->plataforma); ?></span>
                         </div>
                     </a>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
             </section>
-            @endif
+            <?php endif; ?>
 
 
         </div>
@@ -379,7 +390,8 @@
             <p class="text-gray-400">
                 Curriculum Vitae generado por Vitae App
                 <span class="mx-2">•</span>
-                {{ now()->format('Y') }}
+                <?php echo e(now()->format('Y')); ?>
+
             </p>
         </footer>
     </div>
@@ -387,8 +399,9 @@
     <script>
         document.getElementById('downloadPdfBtn').addEventListener('click', function() {
             // Redirect to the PDF download route
-            window.location.href = '/cv/{{ $usuario->slug }}/pdf';
+            window.location.href = '/cv/<?php echo e($usuario->slug); ?>/pdf';
         });
     </script>
 </body>
 </html>
+<?php /**PATH C:\Users\USER\Documents\GitHub\vitae-app\resources\views/cv/public.blade.php ENDPATH**/ ?>

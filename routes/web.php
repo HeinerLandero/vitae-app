@@ -129,13 +129,28 @@ Route::prefix('api')->group(function () {
     // Certifications routes
     Route::get('certificados', function(Request $request) {
         $user = $request->user();
-        $certificados = Certificado::where('usuario_id', $user->id)->orderBy('fecha_expedicion', 'desc')->get();
+        $certificados = Certificado::where('usuario_id', $user->id)
+            ->orderBy('fecha_expedicion', 'desc')
+            ->get()
+            ->map(function($cert) {
+                return [
+                    'id' => $cert->id,
+                    'titulo' => $cert->nombre,
+                    'institucion' => $cert->entidad,
+                    'fecha_emision' => $cert->fecha_expedicion,
+                    'tipo' => $cert->tipo,
+                    'url_documento' => $cert->url_documento,
+                    'usuario_id' => $cert->usuario_id,
+                    'created_at' => $cert->created_at,
+                    'updated_at' => $cert->updated_at,
+                ];
+            });
         return response()->json($certificados);
     })->middleware('auth:sanctum');
 
     Route::post('certificados', function(Request $request) {
         $user = $request->user();
-        $data = $request->all();
+        $data = Certificado::mapFrontendFields($request->all());
         $data['usuario_id'] = $user->id;
         $certificado = Certificado::create($data);
         return response()->json($certificado, 201);
